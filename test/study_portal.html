@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>能開大 ネットワークサークル - ネットワーク構築学習ポータル</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        
+        .code-font {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+        }
+
+        /* アニメーション transition */
+        .tab-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 輝くボーダー効果 */
+        .glow-border {
+            position: relative;
+        }
+        .glow-border::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(to bottom right, #3b82f6, #10b981, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-blue-500 selection:text-white">
+
+    <!-- ヘッダー -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 p-2 rounded-lg text-white shadow-lg shadow-blue-500/20">
+                    <i data-lucide="network" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <span class="font-black text-lg tracking-wider bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">能開大 ネットワークサークル</span>
+                    <p class="text-xs text-slate-400 hidden sm:block">応用課程 生産電子情報技術科1年</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-1.5 h-1.5 mr-1.5 bg-emerald-400 rounded-full animate-ping"></span>
+                    前期活動：ネットワーク構築
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ヒーローセクション -->
+    <section class="relative overflow-hidden py-12 bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800">
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-25"></div>
+        <div class="max-w-5xl mx-auto px-4 text-center relative z-10">
+            <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white mb-4">
+                Cisco CLI設定 <br class="sm:hidden">
+                <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-emerald-400 bg-clip-text text-transparent">早見リファレンス & ポータル</span>
+            </h1>
+            <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-6">
+                毎週月曜日活動！Cisco Packet Tracer を用いたネットワーク構築学習用まとめ。
+                基本設定から、IPv4/v6アドレッシング、RIPによる動的ルーティング、DHCPv4の設定までカバー。
+            </p>
+            <div class="flex flex-wrap justify-center gap-3 text-sm">
+                <span class="px-3 py-1.5 bg-slate-800 rounded-lg text-slate-300 flex items-center gap-1.5 border border-slate-700">
+                    <i data-lucide="calendar" class="w-4 h-4 text-blue-400"></i> 毎週月曜日
+                </span>
+                <span class="px-3 py-1.5 bg-slate-800 rounded-lg text-slate-300 flex items-center gap-1.5 border border-slate-700">
+                    <i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i> Cisco Packet Tracer
+                </span>
+                <span class="px-3 py-1.5 bg-slate-800 rounded-lg text-slate-300 flex items-center gap-1.5 border border-slate-700">
+                    <i data-lucide="github" class="w-4 h-4 text-purple-400"></i> Vercel 公開
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- メインコンテンツ -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+        
+        <!-- セクション1: Packet Tracer導入と基本 -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 glow-border">
+                    <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="p-1.5 bg-blue-500/10 text-blue-400 rounded-md"><i data-lucide="play" class="w-5 h-5"></i></span>
+                        Cisco Packet Tracer 基本操作フロー
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="flex gap-4 items-start">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-800 border border-blue-500/30 text-blue-400 flex items-center justify-center font-bold text-sm">1</div>
+                            <div>
+                                <h3 class="font-semibold text-slate-200">ワークスペースへの配置</h3>
+                                <p class="text-sm text-slate-400 mt-1">
+                                    画面下部の 「Network Devices」 → 「Routers」 から好みのルータ（2911や新型のPT8200など）を選択し、ワークスペースにドラッグ＆ドロップ。
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-4 items-start">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-800 border border-blue-500/30 text-blue-400 flex items-center justify-center font-bold text-sm">2</div>
+                            <div>
+                                <h3 class="font-semibold text-slate-200">PCとのコンソール接続（実習時の基本）</h3>
+                                <p class="text-sm text-slate-400 mt-1">
+                                    「Connections」の青いデカール（コンソール用）を選択し、PCの「RS-232」ポートとルータの「Console」ポートを接続します。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4 items-start">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-800 border border-blue-500/30 text-blue-400 flex items-center justify-center font-bold text-sm">3</div>
+                            <div>
+                                <h3 class="font-semibold text-slate-200">ターミナルの起動と最初のプロンプト回避</h3>
+                                <p class="text-sm text-slate-400 mt-1">
+                                    PCの設定画面の「Terminal」タブを開き、ビットレートなどを既定値（9600）のままOKで進めます。<br>
+                                    起動直後に <code class="code-font text-yellow-400 bg-slate-950 px-1 rounded">Would you like to enter the initial configuration dialog? [yes/no]:</code> と聞かれたら、必ず <span class="font-bold text-red-400">no</span> と打ち込みエンターキーを押しましょう。これで手動設定プロンプトに進めます！
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- サークル活動情報 & お役立ちリンク -->
+            <div class="space-y-6">
+                <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6">
+                    <h3 class="font-bold text-lg text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="info" class="w-5 h-5 text-indigo-400"></i>
+                        サークル活動概要
+                    </h3>
+                    <ul class="text-sm space-y-3 text-slate-300">
+                        <li class="flex justify-between border-b border-slate-800 pb-2">
+                            <span class="text-slate-400">対象科・学年:</span>
+                            <span class="font-semibold">生産電子情報技術科 1年</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-800 pb-2">
+                            <span class="text-slate-400">活動タイミング:</span>
+                            <span class="font-semibold">毎週月曜日放課後</span>
+                        </li>
+                        <li class="flex justify-between border-b border-slate-800 pb-2">
+                            <span class="text-slate-400">前期学習内容:</span>
+                            <span class="font-semibold">ネットワーク構築(Cisco PT)</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-slate-400">後期学習内容:</span>
+                            <span class="font-semibold text-emerald-400">Linux/Windows サーバ構築</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
+                    <h3 class="font-bold text-slate-200 mb-3 flex items-center gap-2">
+                        <i data-lucide="external-link" class="w-4 h-4 text-blue-400"></i>
+                        公式配布資料・リンク
+                    </h3>
+                    <div class="space-y-2.5 text-sm">
+                        <a href="https://drive.google.com/drive/folders/1yhnA8Jg5ulxvuZ55kGLPcHXQPOTzk-Tp" target="_blank" class="block p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-400 flex items-center justify-between transition">
+                            <span>Google ドライブ（講義PDF等）</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </a>
+                        <a href="https://www.netacad.com/about-networking-academy/packet-tracer/" target="_blank" class="block p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-blue-400 flex items-center justify-between transition">
+                            <span>Cisco Packet Tracer 公式DL</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </a>
+                        <a href="https://www.infraexpert.com/" target="_blank" class="block p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 flex items-center justify-between transition">
+                            <span>ネットワークスペシャリスト学習の定番</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- セクション2: インタラクティブ コマンド検索 ＆ リファレンスツール -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8" id="commands-section">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                <div>
+                    <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                        <span class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg"><i data-lucide="terminal" class="w-6 h-6"></i></span>
+                        Cisco IOS CLI 設定コマンド早見表
+                    </h2>
+                    <p class="text-slate-400 text-sm mt-1">実習中にサッと確認してコピーできるお助けツールです。コマンド補完・省略形も併記。</p>
+                </div>
+                
+                <!-- 検索バー -->
+                <div class="relative w-full md:w-80">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                    </span>
+                    <input type="text" id="command-search" placeholder="機能やコマンドで検索..." 
+                        class="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:border-emerald-500 text-slate-200 text-sm placeholder-slate-500 transition">
+                </div>
+            </div>
+
+            <!-- カテゴリタブ -->
+            <div class="flex overflow-x-auto space-x-2 border-b border-slate-800 pb-px mb-6 scrollbar-thin">
+                <button onclick="switchTab('basic')" id="tab-basic" class="tab-btn px-4 py-2.5 font-bold text-sm tracking-wide rounded-t-xl transition-all flex items-center gap-2 border-b-2 border-blue-500 bg-slate-800 text-blue-400">
+                    <i data-lucide="settings-2" class="w-4 h-4"></i> 基本設定
+                </button>
+                <button onclick="switchTab('addressing')" id="tab-addressing" class="tab-btn px-4 py-2.5 font-bold text-sm tracking-wide rounded-t-xl transition-all flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+                    <i data-lucide="globe" class="w-4 h-4"></i> アドレッシング (IPv4/v6)
+                </button>
+                <button onclick="switchTab('routing')" id="tab-routing" class="tab-btn px-4 py-2.5 font-bold text-sm tracking-wide rounded-t-xl transition-all flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+                    <i data-lucide="git-fork" class="w-4 h-4"></i> RIPルーティング
+                </button>
+                <button onclick="switchTab('dhcp')" id="tab-dhcp" class="tab-btn px-4 py-2.5 font-bold text-sm tracking-wide rounded-t-xl transition-all flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200">
+                    <i data-lucide="server-cog" class="w-4 h-4"></i> DHCP設定
+                </button>
+            </div>
+
+            <!-- コマンド表示テーブル -->
+            <div class="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-slate-900/80 border-b border-slate-800">
+                            <th class="p-4 font-bold text-slate-300 w-1/4">モード・プロンプト</th>
+                            <th class="p-4 font-bold text-slate-300 w-1/4">設定の機能</th>
+                            <th class="p-4 font-bold text-slate-300 w-1/3">実行するコマンド</th>
+                            <th class="p-4 font-bold text-slate-300 w-1/6">省略・補完</th>
+                            <th class="p-4 font-bold text-slate-300 w-1/4">備考 / 使用例</th>
+                        </tr>
+                    </thead>
+                    <tbody id="command-table-body" class="divide-y divide-slate-800/50">
+                        <!-- 動的レンダリング -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 検索にヒットしない場合 -->
+            <div id="no-results" class="hidden text-center py-12 text-slate-500">
+                <i data-lucide="frown" class="w-12 h-12 mx-auto mb-3"></i>
+                <p>該当するコマンドが見つかりません。別のワードでお試しください。</p>
+            </div>
+        </section>
+
+        <!-- セクション3: OSI参照モデルの構造（元のサイトの復元 ＋ ビジュアル強化） -->
+        <section class="space-y-6">
+            <div class="text-center">
+                <h2 class="text-2xl font-black text-white">OSI参照モデルの構造</h2>
+                <p class="text-slate-400 text-sm mt-1">通信システムを7つの階層に定義したモデル。サークルではL1～L3を中心に活動します。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center max-w-5xl mx-auto">
+                
+                <!-- 7層タワーの図 -->
+                <div class="md:col-span-7 space-y-2">
+                    <!-- Layer 7 -->
+                    <div class="group bg-gradient-to-r from-red-500/20 to-red-600/10 hover:from-red-500/30 border border-red-500/30 p-3.5 rounded-xl flex items-center transition cursor-pointer">
+                        <div class="bg-red-500 text-white font-bold px-3 py-1 rounded text-xs tracking-wider mr-4 shadow-sm">L7</div>
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-red-200 text-sm">アプリケーション層</h4>
+                            <p class="text-xs text-slate-400">HTTP, DNS, DHCP (エンドユーザに近いアプリケーション処理)</p>
+                        </div>
+                    </div>
+                    <!-- Layer 6 -->
+                    <div class="group bg-gradient-to-r from-orange-500/20 to-orange-600/10 hover:from-orange-500/30 border border-orange-500/30 p-3.5 rounded-xl flex items-center transition cursor-pointer">
+                        <div class="bg-orange-500 text-white font-bold px-3 py-1 rounded text-xs tracking-wider mr-4 shadow-sm">L6</div>
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-orange-200 text-sm">プレゼンテーション層</h4>
+                            <p class="text-xs text-slate-400">SSL/TLS, JPEG (文字コードや圧縮・暗号化の共通形式定義)</p>
+                        </div>
+                    </div>
+                    <!-- Layer 5 -->
+                    <div class="group bg-gradient-to-r from-yellow-500/20 to-yellow-600/10 hover:from-yellow-500/30 border border-yellow-500/30 p-3.5 rounded-xl flex items-center transition cursor-pointer">
+                        <div class="bg-yellow-500 text-white font-bold px-3 py-1 rounded text-xs tracking-wider mr-4 shadow-sm">L5</div>
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-yellow-200 text-sm">セッション層</h4>
+                            <p class="text-xs text-slate-400">ソケット（通信セッション、確立・維持・同期の管理）</p>
+                        </div>
+                    </div>
+                    <!-- Layer 4 -->
+                    <div class="group bg-gradient-to-r from-teal-500/20 to-teal-600/10 hover:from-teal-500/30 border border-teal-500/30 p-3.5 rounded-xl flex items-center transition cursor-pointer">
+                        <div class="bg-teal-500 text-white font-bold px-3 py-1 rounded text-xs tracking-wider mr-4 shadow-sm">L4</div>
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-teal-200 text-sm">トランスポート層</h4>
+                            <p class="text-xs text-slate-400">TCP, UDP (信頼性の高いポート別データ通信制御)</p>
+                        </div>
+                    </div>
+                    <!-- Layer 3 -->
+                    <div class="group bg-gradient-to-r from-blue-500/25 to-blue-600/15 hover:from-blue-500/35 border border-blue-500/50 p-4 rounded-xl flex items-center transition cursor-pointer ring-2 ring-blue-500/30">
+                        <div class="bg-blue-500 text-white font-bold px-3 py-1 rounded text-xs tracking-wider mr-4 shadow-md">L3</div>
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-blue-200 text-sm flex items-center gap-1.5">
+                                ネットワーク層 <span class="text-[10px] bg-blue-600/30 px-1.5 py-0.5 rounded text-blue-300">サークル重点</span>
+                            </h4>
+                            <p class="text-xs text-slate-300">IP, ICMP (ルータによる別ネットワークへの経路決定 - ルーティング)</p>
+                        </div>
+                    </div>
+                    <!-- Layer 2 -->
+                    <div class="group bg-gradient-to-r from-purple-500/25 to-purple-600/15 hover:from-purple-500/35 border border-purple-500/50 p-4 rounded-xl flex items-center transition cursor-pointer ring-2 ring-purple-500/30">
+                        <div class="bg-purple-500 text-white font-bold px-3 py-1 rounded text-xs tracking-wider mr-4 shadow-md">L2</div>
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-purple-200 text-sm flex items-center gap-1.5">
+                                データリンク層 <span class="text-[10px] bg-purple-600/30 px-1.5 py-0.5 rounded text-purple-300">サークル重点</span>
+                            </h4>
+                            <p class="text-xs text-slate-300">イーサネット, PPP (スイッチを介した同一セグメント内通信)</p>
+                        </div>
+                    </div>
+                    <!-- Layer 1 -->
+                    <div class="group bg-gradient-to-r from-emerald-500/25 to-emerald-600/15 hover:from-emerald-500/35 border border-emerald-500/50 p-4 rounded-xl flex items-center transition cursor-pointer ring-2 ring-emerald-500/30">
+                        <div class="bg-emerald-500 text-white font-bold px-3 py-1 rounded text-xs tracking-wider mr-4 shadow-md">L1</div>
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-emerald-200 text-sm flex items-center gap-1.5">
+                                物理層 <span class="text-[10px] bg-emerald-600/30 px-1.5 py-0.5 rounded text-emerald-300">サークル重点</span>
+                            </h4>
+                            <p class="text-xs text-slate-300">LANケーブル, スイッチングハブ, コネクタ (電気的、物理的な通信媒体)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 図解の隣のサイド解説 -->
+                <div class="md:col-span-5 space-y-6">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                        <h3 class="font-bold text-white mb-3 flex items-center gap-2">
+                            <i data-lucide="lightbulb" class="text-yellow-400 w-5 h-5"></i>
+                            第13回「ネットワークのいろは」
+                        </h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            LAN（構内通信網）とWAN（広域通信網）を正しく理解し、ルータがパケットの行き先をどう導くかをOSI参照モデルを通じて学びました。<br><br>
+                            ルータの基本機能である<strong>ルーティング</strong>は、「第3層：ネットワーク層（IP）」で働き、異なるネットワークをつないでいます！
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                        <h3 class="font-bold text-white mb-3 flex items-center gap-2">
+                            <i data-lucide="shield-check" class="text-emerald-400 w-5 h-5"></i>
+                            IPv6の活用と重要性
+                        </h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            IoT機器の爆発的な増加や5Gの普及によって、従来のIPv4アドレスは完全に世界規模で枯渇しています。
+                            これからは<strong>IPv6 (128bit)</strong>がベースになるため、アドレススコープ（リンクローカル等）の違いや、自動割り当て設定をサークルでも重要視しています。
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- お役立ちお楽しみ企画: クイズ -->
+        <section class="bg-gradient-to-r from-blue-950 to-indigo-950 border border-blue-800/40 rounded-2xl p-6 md:p-8">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div>
+                    <span class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-xs font-bold border border-blue-500/30 inline-block mb-3">サークル内お楽しみコンテンツ</span>
+                    <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                        <i data-lucide="help-circle" class="text-blue-400 w-7 h-7"></i>
+                        Cisco コマンド ミニクイズ！
+                    </h2>
+                    <p class="text-slate-300 text-sm mt-1">Cisco CLIの操作力を高めるクイズです。全問正解を目指してサークルの仲間と競い合おう！</p>
+                </div>
+                <button onclick="startQuiz()" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold shadow-lg shadow-blue-500/25 transition flex items-center gap-2">
+                    <i data-lucide="play-circle" class="w-5 h-5"></i> クイズに挑戦する
+                </button>
+            </div>
+
+            <!-- クイズモーダル的な動的コンテナ -->
+            <div id="quiz-box" class="hidden mt-6 bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <span class="text-xs text-slate-400 font-bold tracking-widest uppercase">Question <span id="quiz-num">1</span>/3</span>
+                    <span id="quiz-score" class="text-sm text-emerald-400 font-bold">Score: 0</span>
+                </div>
+                <p id="quiz-question" class="text-base text-white font-semibold">クイズの質問がここに表示されます。</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="quiz-options">
+                    <!-- ボタン群 -->
+                </div>
+                <div id="quiz-result" class="hidden text-sm font-bold p-3 rounded-lg text-center"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-10 mt-16">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
+            <div class="flex justify-center space-x-6 text-slate-400">
+                <span class="flex items-center gap-1"><i data-lucide="users" class="w-4 h-4"></i> サークル長: 永井秀汰</span>
+                <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-4 h-4"></i> 北上能開大</span>
+            </div>
+            <p class="text-xs text-slate-500">
+                &copy; 2026 能開大 応用課程 生産電子情報技術科1年 ネットワークサークル. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- 通知トースト -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-10 opacity-0 pointer-events-none transition-all duration-300 bg-slate-900 border border-emerald-500 text-slate-200 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 z-50">
+        <div class="bg-emerald-500/20 text-emerald-400 p-1 rounded-full">
+            <i data-lucide="check" class="w-4 h-4"></i>
+        </div>
+        <div>
+            <p class="text-xs font-bold text-emerald-400">コピーしました！</p>
+            <p class="text-[10px] text-slate-400" id="toast-msg">コマンドをクリップボードにコピーしました。</p>
+        </div>
+    </div>
+
+    <!-- JavaScript 処理 -->
+    <script>
+        // CSVから変換・抽出したコマンドデータ一覧
+        const rawCommands = {
+            basic: [
+                { mode: "Router>", action: "特権EXECモードへ移行", command: "enable", alias: "ena", note: "管理者モードへ移行する基本コマンド" },
+                { mode: "Router#", action: "設定の表示(実行中)", command: "show running-config", alias: "sho run", note: "現在動いている設定を確認する" },
+                { mode: "Router#", action: "設定の保存", command: "copy running-config startup-config", alias: "cop run sta", note: "ルータの再起動で設定が消えないようNVRAMへ保存" },
+                { mode: "Router#", action: "通信疎通確認", command: "ping [宛先IPアドレス]", alias: "ping [宛先]", note: "例: ping 192.168.0.1" },
+                { mode: "Router#", action: "IPv4インタフェース状態確認", command: "show ip interface brief", alias: "sho ip int b", note: "各ポートのUP/DOWNとIP割り当てを一目で確認" },
+                { mode: "Router#", action: "インタフェース詳細確認", command: "show interface [インタフェース名]", alias: "sho int [ポート]", note: "例: sho int gi0/0" },
+                { mode: "Router#", action: "IPv4ルーティングテーブル確認", command: "show ip route", alias: "sho ip rou", note: "ルータがどの宛先を知っているか確認" },
+                { mode: "Router#", action: "グローバルコンフィグモードへ移行", command: "configure terminal", alias: "conf t", note: "詳細設定を行うための階層に移行" },
+                { mode: "Router(config)#", action: "DNS名前解決の無効化", command: "no ip domain-lookup", alias: "no ip dom", note: "【重要】タイポ時に名前解決で数分間待たされるのを防ぐ" },
+                { mode: "Router(config)#", action: "ホスト名（機器名）の設定", command: "hostname [ホスト名]", alias: "host [名]", note: "例: hostname R1" },
+                { mode: "Router(config)#", action: "特権PW（暗号化）の設定", command: "enable secret [パスワード]", alias: "ena sec [PW]", note: "例: enable secret cisco" },
+                { mode: "Router(config)#", action: "IPv6ルーティングの有効化", command: "ipv6 unicast-routing", alias: "ipv6 uni", note: "IPv6をルーティングする際は必須で入力" },
+                { mode: "Router(config)#", action: "コンソールライン設定に移行", command: "line console 0", alias: "lin con 0", note: "コンソール経由の設定を行う階層へ" }
+            ],
+            addressing: [
+                { mode: "Router(config-if)#", action: "インタフェース有効化", command: "no shutdown", alias: "no sh", note: "Ciscoルータはデフォルトでポートがシャットダウンしています" },
+                { mode: "Router(config-if)#", action: "IPv4アドレスとサブネットの設定", command: "ip address [IPv4アドレス] [サブネットマスク]", alias: "ip add [IP] [マスク]", note: "例: ip add 192.168.0.1 255.255.255.0" },
+                { mode: "Router(config-if)#", action: "インタフェースの説明記述", command: "description [コメント]", alias: "des [コメント]", note: "例: description Connect_to_L2SW" },
+                { mode: "Router(config-if)#", action: "IPv6アドレス設定", command: "ipv6 address [IPv6アドレス/プレフィックス長]", alias: "ipv6 add [IP/長]", note: "例: ipv6 add 2001:db8:1::1/64" },
+                { mode: "Router(config-if)#", action: "IPv6リンクローカル設定", command: "ipv6 address [リンクローカルアドレス] link-local", alias: "ipv6 add [IP] lin", note: "例: ipv6 add fe80::1 link-local" }
+            ],
+            routing: [
+                { mode: "Router(config)#", action: "RIPルーティングプロセスの起動", command: "router rip", alias: "rout rip", note: "RIPプロトコル設定階層に入ります" },
+                { mode: "Router(config-router)#", action: "RIPバージョン2の有効化", command: "version 2", alias: "ver 2", note: "クラスレスルーティング(CIDR)に対応させるため必須" },
+                { mode: "Router(config-router)#", action: "ルーティング対象ネットワークの定義", command: "network [ネットワークアドレス]", alias: "net [ネットワーク]", note: "例: network 192.168.0.0 (クラスフルアドレスで指定)" },
+                { mode: "Router(config-router)#", action: "自動経路集約の無効化", command: "no auto-summary", alias: "no aut", note: "サブネット化されたネットワークを正しく広告するために必須" },
+                { mode: "Router(config)#", action: "デフォルトスタティックルート設定", command: "ip route 0.0.0.0 0.0.0.0 [次ホップIP または 出力インタフェース]", alias: "ip rou 0.0.0.0...", note: "全未知ネットワークへの送り先。インターネット等への出口" }
+            ],
+            dhcp: [
+                { mode: "Router(config)#", action: "DHCP配布対象外アドレスの除外", command: "ip dhcp excluded-address [開始アドレス] [終了アドレス]", alias: "ip dhcp exc", note: "ルータ本体やサーバーの固定IPを除外。例: ip dhcp exc 192.168.0.1 192.168.0.10" },
+                { mode: "Router(config)#", action: "DHCPプール（配信範囲）作成", command: "ip dhcp pool [プール名]", alias: "ip dhcp pool [名]", note: "例: ip dhcp pool LAN-POOL" },
+                { mode: "Router(dhcp-config)#", action: "配布ネットワークとマスクの定義", command: "network [ネットワークアドレス] [サブネットマスク]", alias: "net [ネットワーク] [マスク]", note: "例: network 192.168.0.0 255.255.255.0" },
+                { mode: "Router(dhcp-config)#", action: "デフォルトゲートウェイの指定", command: "default-router [ルータのIPアドレス]", alias: "def [IP]", note: "配布クライアントのゲートウェイアドレス。例: default-router 192.168.0.1" },
+                { mode: "Router(dhcp-config)#", action: "DNSサーバーアドレスの指定", command: "dns-server [DNSのIPアドレス]", alias: "dns [IP]", note: "配布するDNS。例: dns-server 8.8.8.8" }
+            ]
+        };
+
+        let currentActiveTab = 'basic';
+
+        // ページ読み込み時にタブ初期表示とアイコン変換
+        window.onload = function() {
+            lucide.createIcons();
+            switchTab('basic');
+            
+            // 検索ボックスの監視
+            document.getElementById('command-search').addEventListener('input', function(e) {
+                renderCommands(currentActiveTab, e.target.value);
+            });
+        };
+
+        // タブ切り替え処理
+        function switchTab(tabKey) {
+            currentActiveTab = tabKey;
+            
+            // ボタンのアクティブ表現の制御
+            const tabs = ['basic', 'addressing', 'routing', 'dhcp'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tabKey) {
+                    btn.className = "tab-btn px-4 py-2.5 font-bold text-sm tracking-wide rounded-t-xl transition-all flex items-center gap-2 border-b-2 border-blue-500 bg-slate-850 text-blue-400";
+                } else {
+                    btn.className = "tab-btn px-4 py-2.5 font-bold text-sm tracking-wide rounded-t-xl transition-all flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200";
+                }
+            });
+
+            // 検索欄をクリア
+            document.getElementById('command-search').value = "";
+            renderCommands(tabKey, "");
+        }
+
+        // コマンド一覧のレンダリング
+        function renderCommands(tabKey, searchQuery = "") {
+            const body = document.getElementById('command-table-body');
+            const noResults = document.getElementById('no-results');
+            body.innerHTML = "";
+
+            const commands = rawCommands[tabKey];
+            const filtered = commands.filter(cmd => {
+                const query = searchQuery.toLowerCase();
+                return cmd.action.toLowerCase().includes(query) || 
+                       cmd.command.toLowerCase().includes(query) || 
+                       cmd.alias.toLowerCase().includes(query) || 
+                       cmd.note.toLowerCase().includes(query);
+            });
+
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                filtered.forEach(cmd => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-900/50 transition duration-150";
+
+                    // コピーボタン付きコマンド表示の生成
+                    const secureCommand = cmd.command.replace(/'/g, "\\'");
+                    
+                    tr.innerHTML = `
+                        <td class="p-4 align-top text-xs font-bold text-indigo-400 code-font">${escapeHtml(cmd.mode)}</td>
+                        <td class="p-4 align-top text-slate-200 font-semibold">${escapeHtml(cmd.action)}</td>
+                        <td class="p-4 align-top">
+                            <div class="flex items-center justify-between bg-slate-950 px-3 py-2 rounded-lg border border-slate-800 group/copy">
+                                <code class="text-emerald-400 code-font text-xs select-all">${escapeHtml(cmd.command)}</code>
+                                <button onclick="copyToClipboard('${secureCommand}')" class="text-slate-500 hover:text-emerald-400 transition ml-2 p-1 rounded hover:bg-slate-850 opacity-0 group-hover/copy:opacity-100 focus:opacity-100" title="コマンドをコピー">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="p-4 align-top text-xs text-yellow-400 code-font font-medium">${escapeHtml(cmd.alias)}</td>
+                        <td class="p-4 align-top text-xs text-slate-400 leading-relaxed">${escapeHtml(cmd.note)}</td>
+                    `;
+                    body.appendChild(tr);
+                });
+                lucide.createIcons();
+            }
+        }
+
+        // HTMLエスケープ処理
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // コピー機能 (navigator.clipboard 代替対応)
+        function copyToClipboard(text) {
+            // 例: [開始アドレス] などを除いた基本のコマンドを取り出してコピーしやすいように加工しても良いが、そのまま提供。
+            const cleanText = text.replace(/\[.*?\]/g, ""); // 実用的なサークル員向けに、入力プレースホルダーを空にする簡易対応も可能
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast(text);
+            } catch (err) {
+                console.error('コピーに失敗しました。', err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // トースト通知表示
+        function showToast(text) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = `「${text}」をコピーしました`;
+            toast.className = "fixed bottom-5 right-5 transform translate-y-0 opacity-100 bg-slate-900 border border-emerald-500 text-slate-200 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 z-50 transition-all duration-300";
+            
+            setTimeout(() => {
+                toast.className = "fixed bottom-5 right-5 transform translate-y-10 opacity-0 pointer-events-none transition-all duration-300 bg-slate-900 border border-emerald-500 text-slate-200 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 z-50";
+            }, 3000);
+        }
+
+        // ----------------- お楽しみ企画：Cisco コマンド ミニクイズの実装 -----------------
+        const quizData = [
+            {
+                q: "タイピングミスをした際に、ルータがDNSサーバーを探してフリーズする現象を無効化するコマンドはどれ？",
+                options: ["no ip search", "no ip domain-lookup", "no dns-server", "disable domain-lookup"],
+                ans: 1
+            },
+            {
+                q: "Ciscoルータの全てのインタフェースのIPアドレス割り当てや稼働状態を、最も手軽に一覧表示する特権EXECコマンドはどれ？",
+                options: ["show ip route", "show interface status", "show ip interface brief", "show running-config"],
+                ans: 2
+            },
+            {
+                q: "RIPルーティング設定時に、クラスフルな境界で勝手にルートが集約されてしまうのを防ぐための重要なコマンドはどれ？",
+                options: ["no classful", "no version 1", "no ip route", "no auto-summary"],
+                ans: 3
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let score = 0;
+
+        function startQuiz() {
+            currentQuizIndex = 0;
+            score = 0;
+            const quizBox = document.getElementById('quiz-box');
+            quizBox.classList.remove('hidden');
+            document.getElementById('quiz-score').innerText = "Score: " + score;
+            showQuestion();
+            
+            // クイズ部分にスクロール
+            quizBox.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showQuestion() {
+            const data = quizData[currentQuizIndex];
+            document.getElementById('quiz-num').innerText = currentQuizIndex + 1;
+            document.getElementById('quiz-question').innerText = data.q;
+            
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = "";
+            
+            const resultBox = document.getElementById('quiz-result');
+            resultBox.classList.add('hidden');
+
+            data.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "p-3 bg-slate-800 hover:bg-slate-700 text-left text-slate-200 font-medium rounded-lg text-sm border border-slate-700 transition flex items-center justify-between group";
+                btn.onclick = () => checkAnswer(idx);
+                btn.innerHTML = `
+                    <span>${opt}</span>
+                    <span class="w-5 h-5 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[10px] group-hover:border-blue-500 font-bold">${String.fromCharCode(65 + idx)}</span>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx) {
+            const data = quizData[currentQuizIndex];
+            const resultBox = document.getElementById('quiz-result');
+            resultBox.classList.remove('hidden');
+            
+            // 全選択ボタンを一時無効化
+            const buttons = document.getElementById('quiz-options').getElementsByTagName('button');
+            for(let btn of buttons) {
+                btn.disabled = true;
+            }
+
+            if (selectedIdx === data.ans) {
+                score += 10;
+                document.getElementById('quiz-score').innerText = "Score: " + score;
+                resultBox.className = "text-sm font-bold p-3 rounded-lg text-center bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
+                resultBox.innerHTML = "<div class='flex items-center justify-center gap-1.5'><i data-lucide='smile' class='w-4 h-4'></i> 正解！さすがサークルメンバー！</div>";
+            } else {
+                resultBox.className = "text-sm font-bold p-3 rounded-lg text-center bg-red-500/10 text-red-400 border border-red-500/30";
+                resultBox.innerHTML = `<div class='flex items-center justify-center gap-1.5'><i data-lucide='frown' class='w-4 h-4'></i> 残念！ 正解は: ${data.options[data.ans]} </div>`;
+            }
+            lucide.createIcons();
+
+            setTimeout(() => {
+                currentQuizIndex++;
+                if (currentQuizIndex < quizData.length) {
+                    showQuestion();
+                } else {
+                    finishQuiz();
+                }
+            }, 2500);
+        }
+
+        function finishQuiz() {
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = "";
+            document.getElementById('quiz-question').innerText = "クイズ終了！お疲れ様でした。";
+            
+            const resultBox = document.getElementById('quiz-result');
+            resultBox.className = "text-center py-6 bg-blue-500/10 border border-blue-500/30 rounded-xl space-y-3";
+            
+            let message = "";
+            if (score === 30) {
+                message = "完璧です！すでにCCNAレベルの基礎力がありますね！💮";
+            } else if (score >= 10) {
+                message = "素晴らしい成績です！この調子で毎週のサークル活動を楽しみましょう！👍";
+            } else {
+                message = "再挑戦してコマンドをマスターしましょう！復習あるのみ！🔥";
+            }
+
+            resultBox.innerHTML = `
+                <div class="text-3xl font-black text-white">最終得点: ${score} / 30</div>
+                <p class="text-sm text-slate-300 px-4">${message}</p>
+                <button onclick="startQuiz()" class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold text-xs transition">
+                    もう一度挑戦する
+                </button>
+            `;
+        }
+    </script>
+</body>
+</html>
