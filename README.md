@@ -1,16 +1,16 @@
 # nw-circle
 能開大ネットワークサークル<br>
 サークルのHTML/CSS資料をブラウザ公開するために作成<br>
-[ファイル閲覧はコチラ-->](https://nw-circle.vercel.app/)
+[ファイル閲覧はコチラ](https://nw-circle.vercel.app/)
 
 ---
 
 ## リポジトリ構成
 ```text
 .
-├── documents/                      (サークル活動メイン資料フォルダ)
-├── notes/                          (サークル長のプライベートなナレッジ共有フォルダ)
+├── documents/                      (サークル活動のメイン資料集フォルダ)
+├── notes/                          (サークル長のナレッジ共有フォルダ)
 ├── test/                           (テスト段階の資料フォルダ)
-├── index.html                      (リポジトリ内ファイルのリンクページ)
+├── index.html                      (公開Webサイトのトップページ)
 └── README.md                       (リポジトリ概要)
 ```
