@@ -1,8 +1,8 @@
 # nw-circle
-<body>
-    能開大ネットワークサークル
-    サークルのHTML/CSS資料をブラウザ公開するために作成
-</body>
+<div>
+    <p>能開大ネットワークサークル</p>
+    <p>サークルのHTML/CSS資料をブラウザ公開するために作成</p>
+</div>
 <a href="https://nw-circle.vercel.app/">ファイル閲覧はコチラ</a>
 
 ---
