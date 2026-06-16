@@ -2,7 +2,9 @@
 能開大ネットワークサークル<br>
 サークルのHTML/CSS資料をブラウザ公開するために作成<br>
 [ファイル閲覧はコチラ](https://nw-circle.vercel.app/)
-<a href="https://nw-circle.vercel.app/" target="_blank">ファイル閲覧はコチラ</a>
+<a href="https://nw-circle.vercel.app/" target="_blank" rel="noopener noreferer">
+    ファイル閲覧はコチラ
+</a>
 
 ---
 
