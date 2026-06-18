@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ネットワークサークル 2026年度サークル情報</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .date-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, #fffde7, #fff9c4);
+            border-left: 5px solid #fbc02d;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            .date-badge {
+                position: static;
+                text-align: right;
+                margin-bottom: 10px;
+            }
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .info-table th, .info-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .info-table th {
+            background-color: #f2f2f2;
+            color: var(--primary-color);
+            width: 30%;
+            white-space: nowrap;
+        }
+
+        .features {
+            background-color: #edf2f7;
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        .features h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 5px;
+        }
+
+        .features ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .features li {
+            margin-bottom: 10px;
+        }
+
+        .gallery {
+            margin-top: 30px;
+        }
+
+        .gallery h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .image-placeholder-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .image-placeholder-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .img-box {
+            background: #e2e8f0;
+            border: 2px dashed #cbd5e1;
+            border-radius: 6px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 15px;
+            color: #475569;
+        }
+
+        .img-box span {
+            font-size: 0.9rem;
+            margin-top: 10px;
+            color: #64748b;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .github-link {
+            background-color: #24292e;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .github-link:hover {
+            background-color: #555;
+        }
+
+        .qr-section {
+            text-align: center;
+        }
+
+        .qr-placeholder {
+            width: 100px;
+            height: 100px;
+            background: #333;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            margin: 5px auto;
+            border-radius: 4px;
+        }
+
+        .qr-image {
+            width: 150px;
+            height: 150px;
+            margin: 5px auto;
+            display: block;
+        }
+
+        .img-picture {
+            width: 400px;
+            height: 300px;
+            margin: 5px;
+        }
+
+        .img-picture2 {
+            width: 400px;
+            height: 300px;
+            margin: 5px;
+        }
+
+        .github-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="date-badge">掲載日: 2026/6/18</div>
+        <h1>ネットワークサークル</h1>
+        <p class="subtitle">～2026年度サークル情報～</p>
+    </header>
+
+    <div class="welcome-banner">
+        初心者大歓迎です！ 気軽に見学へお越しください！
+    </div>
+
+    <div class="content-grid">
+        <div>
+            <table class="info-table">
+                <tr>
+                    <th>活動日</th>
+                    <td>毎週月曜</td>
+                </tr>
+                <tr>
+                    <th>活動時間</th>
+                    <td>17:00～最大18:30</td>
+                </tr>
+                <tr>
+                    <th>活動場所</th>
+                    <td>G206（G棟2F）</td>
+                </tr>
+                <tr>
+                    <th>顧問</th>
+                    <td>吉崎先生，高橋弘先生</td>
+                </tr>
+                <tr>
+                    <th>サークル長</th>
+                    <td>永井秀汰</td>
+                </tr>
+                <tr>
+                    <th>メンバー</th>
+                    <td>19名</td>
+                </tr>
+                <tr>
+                    <th>活動内容</th>
+                    <td>ネットワーク／サーバ構築</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="features">
+            <h3>サークルの特徴・イベント</h3>
+            <ul>
+                <li><strong>アットホームなサークル内イベント！</strong><br>メンバー同士の親睦を深める楽しいイベントがあります。</li>
+                <li><strong>スキルアップ＆挑戦のサポート！</strong><br>ネットワークやサーバ構築の技術を磨くだけでなく、技能大会への挑戦もしっかりサポートします。</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="gallery">
+        <h3>活動風景</h3>
+        <div class="image-placeholder-grid">
+            <div class="img-box">
+                <!--<strong>【写真1: サークル内の様子】</strong>
+                <span>大きな円卓を囲んで、メンバーが軽食（鍋や麺類など）を食べながら和気あいあいと交流しているアットホームな風景</span>-->
+                <img src="./circle-event.jpg" alt="PNG画像" class="img-picture">
+            </div>
+            <div class="img-box">
+                <!--<strong>【写真2: 大会への挑戦】</strong>
+                <span>「ITネットワークシステム管理」のゼッケン（背番号1）を背負い、デュアルディスプレイのPCに向かって真剣に競技に挑むメンバーの後ろ姿</span>-->
+                <img src="./P8040183.JPG" alt="PNG画像" class="img-picture2">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="github-container">
+            <p style="margin: 0 0 10px 0; font-weight: bold;">サークル公式GitHubリポジトリはこちら➡</p>
+            <!--<a href="https://github.com/nagaissue/nw-circle" class="github-link">サークル用GitHubリポジトリはこちら</a>-->
+            <img src="QR_github.png" alt="GitHubリポジトリのQRコード" class="qr-image">
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>
