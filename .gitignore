@@ -1,3 +1,6 @@
 tests/
 images/
 trash/
+node_modules/
+package-lock.json
+package.json
