@@ -1,15 +1,10 @@
 ---
-title: ""
-emoji: "🤖"
+title: "2026年度 ネットワークサークル活動計画"
+emoji: "🌐"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: []
+topics: ["markdown"]
 published: false
 ---
-
-# 2026年度 ネットワークサークル活動計画
-
-作成日：2026年4月26日
-作成者：永井秀汰
 
 ## 1. 年間活動計画
 
