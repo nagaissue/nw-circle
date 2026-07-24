@@ -3,7 +3,7 @@
     <p>能開大ネットワークサークル</p>
     <p>サークルのHTML/CSS資料をブラウザ公開するために作成</p>
 </div>
-<a href="https://nw-circle.vercel.app/ target="_blank">ファイル閲覧はコチラ</a>
+<a href="https://nw-circle.vercel.app/" target="_blank">ファイル閲覧はコチラ</a>
 
 ---
 
