@@ -2,7 +2,7 @@
 title: "Cisco CLI設定コマンド一覧"
 emoji: "🌐"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["nwcircle"]
+topics: ["network"]
 published: true
 ---
 
