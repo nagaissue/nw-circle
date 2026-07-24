@@ -110,8 +110,8 @@ Windows のデスクトップ画面下部（タスクバー）にある**検索�
 
 日々の作業で作成した成果物や提出用資料などを蓄積している親フォルダーです。
 
-### 📁 "CiscoPacketTracer_Installer" フォルダ
+### 📁 "CiscoPacketTracerInstaller" フォルダ
 
-<!-- <sup>用途：ツール用インストーラー</sup> -->
+<sup>用途：ツール用インストーラー</sup>
 
 Cisco Packet Tracer（パケットトレーサー）の公式インストーラーを格納しています。新規導入・アップデート時にご活用ください。
