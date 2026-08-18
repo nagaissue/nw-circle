@@ -2,9 +2,9 @@
 
 ## 概要
 
-サークル資料をクラウドで共有する。
+サークル資料をクラウドで共有する
 
-[リポジトリ閲覧コチラ](https://nw-circle.vercel.app/)
+[リポジトリ構成](https://nw-circle.vercel.app/)
 
 ## リポジトリ構成
 
