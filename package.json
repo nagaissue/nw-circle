@@ -1,0 +1,27 @@
+{
+  "name": "nw-circle",
+  "version": "1.0.0",
+  "description": "<div>\r     <p>能開大ネットワークサークル</p>\r     <p>サークルのHTML/CSS資料をブラウザ公開するために作成</p>\r </div>\r <a href=\"https://nw-circle.vercel.app/\">ファイル閲覧はコチラ</a>",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nagaissue/nw-circle.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nagaissue/nw-circle/issues"
+  },
+  "homepage": "https://github.com/nagaissue/nw-circle#readme",
+  "dependencies": {
+    "zenn-cli": "^0.5.2"
+  }
+}
