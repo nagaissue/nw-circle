@@ -3,7 +3,7 @@ title: "2026年度ネットワークサークル活動計画"
 emoji: "🌐"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["network"]
-published: false
+published: true
 ---
 ## 年間活動計画
 
