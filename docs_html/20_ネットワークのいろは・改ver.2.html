@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ネットワークのいろは・改 - ネットワークサークル 資料</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --accent-rgb: 56, 189, 248;
+            --border-color: #334155;
+            --header-bg: rgba(15, 23, 42, 0.92);
+            --code-bg: #0b1120;
+            --code-text: #38bdf8;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --radius: 10px;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e2e8f0;
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent: #0284c7;
+            --accent-hover: #0369a1;
+            --accent-rgb: 2, 132, 199;
+            --border-color: #cbd5e1;
+            --header-bg: rgba(255, 255, 255, 0.94);
+            --code-bg: #1e293b;
+            --code-text: #38bdf8;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Header Bar */
+        header.top-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            gap: 16px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: rgba(var(--accent-rgb), 0.1);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .back-link:hover {
+            background: rgba(var(--accent-rgb), 0.2);
+        }
+
+        .header-title-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .header-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .category-tag {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background: rgba(var(--accent-rgb), 0.15);
+            color: var(--accent);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-switch-group {
+            display: flex;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .view-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .view-btn.active {
+            background: var(--card-bg);
+            color: var(--accent);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-btn {
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+        }
+        .icon-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(0,0,0,0.2);
+            z-index: 99;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            transition: width 0.3s ease;
+        }
+
+        /* Presentation Mode Container */
+        #presentation-view {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            user-select: none;
+        }
+
+        .slide-stage {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            transition: opacity 0.2s ease;
+        }
+
+        /* Slide Overlay Navigation Arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 72px;
+            background: rgba(15, 23, 42, 0.65);
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+        .slide-stage:hover .nav-arrow {
+            opacity: 1;
+        }
+        .nav-arrow:hover {
+            background: rgba(56, 189, 248, 0.85);
+        }
+        .nav-prev { left: 0; border-radius: 0 8px 8px 0; }
+        .nav-next { right: 0; border-radius: 8px 0 0 8px; }
+
+        /* Presentation Controls Bar */
+        .pres-controls {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            background: var(--card-bg);
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+
+        .pres-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slide-counter {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .current-slide-title {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            max-width: 400px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pres-nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ctrl-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 7px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        .ctrl-btn:hover:not(:disabled) {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .ctrl-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Document Mode View */
+        #document-view {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px 80px;
+            width: 100%;
+        }
+
+        .doc-slide-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .doc-slide-card:hover {
+            border-color: rgba(var(--accent-rgb), 0.5);
+        }
+
+        .doc-slide-header {
+            background: var(--bg-tertiary);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .slide-badge {
+            background: var(--accent);
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .doc-slide-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .doc-slide-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .doc-slide-img-box {
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            cursor: zoom-in;
+            border: 1px solid var(--border-color);
+        }
+
+        .doc-slide-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .img-hint {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            pointer-events: none;
+        }
+
+        .doc-slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .para-item {
+            line-height: 1.7;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            padding: 4px 0;
+        }
+
+        .para-item a {
+            color: var(--accent);
+            text-decoration: underline;
+            word-break: break-all;
+        }
+
+        .code-box {
+            background: var(--code-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .code-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .copy-btn {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .code-box pre {
+            padding: 12px 16px;
+            margin: 0;
+            overflow-x: auto;
+            font-family: "Cascadia Code", "Fira Code", Consolas, "Courier New", monospace;
+            font-size: 0.9rem;
+            color: #4ade80;
+            line-height: 1.5;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        .slide-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .slide-table th, .slide-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+        .slide-table th {
+            background: var(--bg-tertiary);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .slide-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .slide-notes {
+            background: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .drawer-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .drawer-panel {
+            position: fixed;
+            top: 0;
+            left: -380px;
+            width: 360px;
+            height: 100%;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            z-index: 201;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.5);
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        .drawer-panel.open {
+            left: 0;
+        }
+
+        .drawer-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .drawer-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        .drawer-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .drawer-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--bg-tertiary);
+        }
+        .drawer-item:hover, .drawer-item.active {
+            background: rgba(var(--accent-rgb), 0.15);
+            border-color: var(--accent);
+        }
+
+        .drawer-thumb {
+            width: 80px;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 4px;
+            background: #000;
+        }
+
+        .drawer-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .drawer-num {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 700;
+            display: block;
+        }
+
+        .drawer-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+        .lightbox.open {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 95vw;
+            max-height: 95vh;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .help-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 24px;
+            max-width: 450px;
+            width: 90%;
+            z-index: 250;
+            display: none;
+            box-shadow: var(--shadow);
+        }
+        .help-modal.open {
+            display: block;
+        }
+        .help-table {
+            width: 100%;
+            margin-top: 14px;
+            border-collapse: collapse;
+        }
+        .help-table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+        .help-key {
+            background: var(--bg-tertiary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        @media print {
+            header.top-header, .pres-controls, .progress-bar-container, .drawer-panel, .drawer-overlay, .view-switch-group, .icon-btn, .img-hint {
+                display: none !important;
+            }
+            #presentation-view {
+                display: none !important;
+            }
+            #document-view {
+                display: block !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+            }
+            .doc-slide-card {
+                page-break-after: always;
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                margin-bottom: 20px !important;
+            }
+            body {
+                background: #fff !important;
+                color: #000 !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header.top-header {
+                padding: 0 10px;
+            }
+            .current-slide-title {
+                display: none;
+            }
+            .header-title {
+                max-width: 180px;
+            }
+            .view-btn span {
+                display: none;
+            }
+            .doc-slide-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-header">
+        <div class="header-left">
+            <a href="index.html" class="back-link" title="全資料一覧へ戻る">◀ 一覧へ</a>
+            <div class="header-title-box">
+                <span class="category-tag">🌐 ネットワーク基礎・歴史</span>
+                <h1 class="header-title" title="ネットワークのいろは・改">ネットワークのいろは・改</h1>
+            </div>
+        </div>
+        <div class="header-controls">
+            <div class="view-switch-group">
+                <button class="view-btn active" id="btn-pres-mode" onclick="switchMode('presentation')">
+                    <span>🖥️ スライド</span>
+                </button>
+                <button class="view-btn" id="btn-doc-mode" onclick="switchMode('document')">
+                    <span>📄 ドキュメント</span>
+                </button>
+            </div>
+            <button class="icon-btn" onclick="toggleDrawer()" title="目次・スライド一覧 (M)">📑</button>
+            <button class="icon-btn" onclick="toggleTheme()" title="テーマ切替 (T)">🌓</button>
+            <button class="icon-btn" onclick="toggleHelp()" title="操作説明 (?)">❓</button>
+            <button class="icon-btn" onclick="toggleFullscreen()" title="全画面表示 (F)">⛶</button>
+        </div>
+    </header>
+
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <main id="presentation-view">
+        <div class="slide-stage" id="slideStage">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_1.png" alt="Slide 1" class="slide-image" id="activeSlideImg">
+            <button class="nav-arrow nav-prev" onclick="prevSlide()" title="前へ (←)">‹</button>
+            <button class="nav-arrow nav-next" onclick="nextSlide()" title="次へ (→)">›</button>
+        </div>
+
+        <div class="pres-controls">
+            <div class="pres-info">
+                <span class="slide-counter" id="slideCounter">1 / 16</span>
+                <span class="current-slide-title" id="currentSlideTitle">ネットワークのいろは・改</span>
+            </div>
+            <div class="pres-nav-buttons">
+                <button class="ctrl-btn" onclick="goToSlide(1)" title="最初へ (Home)">⏮️ 最初</button>
+                <button class="ctrl-btn" id="btnPrev" onclick="prevSlide()" title="前へ (←)">◀ 前へ</button>
+                <button class="ctrl-btn" id="btnNext" onclick="nextSlide()" title="次へ (→)">次へ ▶</button>
+                <button class="ctrl-btn" onclick="goToSlide(16)" title="最後へ (End)">最後 ⏭️</button>
+            </div>
+        </div>
+    </main>
+
+    <main id="document-view">
+        
+        <article class="doc-slide-card" id="doc-slide-1">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 1 / 16</span>
+                <h3 class="doc-slide-title">ネットワークのいろは・改</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_1.png" alt="Slide 1: ネットワークのいろは・改" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_1.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">ネットワークのいろは・改</p>
+<p class="para-item">バージョン：2.0</p>
+<p class="para-item">作成日　　：2026/07/13</p>
+<p class="para-item">変更日　　：2026/07/27</p>
+<p class="para-item">作成者　　：永井秀汰</p>
+<p class="para-item">～第21回ネットワークサークル～</p>
+</div>
+                    
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-2">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 2 / 16</span>
+                <h3 class="doc-slide-title">目次</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_2.png" alt="Slide 2: 目次" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_2.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">目次</p>
+<p class="para-item">コンピュータネットワーク</p>
+<p class="para-item">TCP/IPとインターネット</p>
+<p class="para-item">ネットワークプロトコル</p>
+<p class="para-item">1</p>
+</div>
+                    
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-3">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 3 / 16</span>
+                <h3 class="doc-slide-title">ホストコンピュータの登場</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_3.png" alt="Slide 3: ホストコンピュータの登場" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_3.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">ホストコンピュータの登場</p>
+<p class="para-item">2</p>
+<p class="para-item">ホストコンピュータ</p>
+<p class="para-item">スタンドアロン型</p>
+<p class="para-item">計算処理</p>
+<p class="para-item">情報処理</p>
+<p class="para-item">～当時～</p>
+<p class="para-item">▲コンピュータは大型</p>
+<p class="para-item">▲コンピュータ同士の接続不可</p>
+</div>
+                    
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-4">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 4 / 16</span>
+                <h3 class="doc-slide-title">”汎用機”，”メインフレーム”とも称される</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_4.png" alt="Slide 4: ”汎用機”，”メインフレーム”とも称される" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_4.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">”汎用機”，”メインフレーム”とも称される</p>
+<p class="para-item">3</p>
+<p class="para-item">総務省｜令和元年版 情報通信白書｜情報システムの進化</p>
+<p class="para-item"><a href="https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/r01/html/nd111140.html" target="_blank" rel="noopener">https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/r01/html/nd111140.html</a></p>
+<p class="para-item">IBM Zメインフレームのサーバーとソフトウェア</p>
+<p class="para-item"><a href="https://www.ibm.com/jp-ja/products/z" target="_blank" rel="noopener">https://www.ibm.com/jp-ja/products/z</a></p>
+<p class="para-item">IBM社の最新ホストコンピュータ</p>
+<p class="para-item">（組込みAI搭載）</p>
+<p class="para-item">ホストコンピュータ</p>
+<p class="para-item">富士通 FACOM230-50（1966年）</p>
+</div>
+                    <div class="slide-notes"><strong>📝 備考・解説:</strong> 総務省｜令和元年版 情報通信白書｜情報システムの進化
+https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/r01/html/nd111140.html
+IBM Zメインフレームのサーバーとソフトウェア
+https://www.ibm.com/jp-ja/products/z</div>
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-5">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 5 / 16</span>
+                <h3 class="doc-slide-title">パーソナルコンピュータ（PC）の登場</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_5.png" alt="Slide 5: パーソナルコンピュータ（PC）の登場" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_5.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">パーソナルコンピュータ（PC）の登場</p>
+<p class="para-item">ホストコンピュータから小型化，情報処理が容易になった</p>
+<p class="para-item">4</p>
+<p class="para-item">Apple Ⅱ</p>
+<p class="para-item">2013_6-19_lecture_note.pdf</p>
+<p class="para-item"><a href="https://www.bk.tsukuba.ac.jp/~mrlab/note/2013年度/2013_6-19_lecture_note.pdf" target="_blank" rel="noopener">https://www.bk.tsukuba.ac.jp/~mrlab/note/2013年度/2013_6-19_lecture_note.pdf</a></p>
+<p class="para-item">PCの始祖と称される“Apple Ⅱ”（1977年）</p>
+</div>
+                    <div class="slide-notes"><strong>📝 備考・解説:</strong> 2013_6-19_lecture_note.pdf
+https://www.bk.tsukuba.ac.jp/~mrlab/note/2013年度/2013_6-19_lecture_note.pdf</div>
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-6">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 6 / 16</span>
+                <h3 class="doc-slide-title">ARPANET（アーパネット） 1969年…米国内の4つの大学・研究機関を接続する形で運用が開始</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_6.png" alt="Slide 6: ARPANET（アーパネット） 1969年…米国内の4つの大学・研究機関を接続する形で運用が開始" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_6.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">ARPANET（アーパネット）1969年…米国内の4つの大学・研究機関を接続する形で運用が開始</p>
+<p class="para-item">5</p>
+<p class="para-item">←左図のアイコン箇所</p>
+<p class="para-item">①カリフォルニア大学ロサンゼルス校(UCLA)</p>
+<p class="para-item">②カリフォルニア大学サンタバーバラ校(UCSB)</p>
+<p class="para-item">③ユタ大学</p>
+<p class="para-item">④スタンフォード研究所(SRI)</p>
+<p class="para-item">米国防総省の資金提供により，1967年に研究を開始したパケット通信型ネットワーク</p>
+<p class="para-item">②</p>
+<p class="para-item">①</p>
+<p class="para-item">③</p>
+<p class="para-item">④</p>
+</div>
+                    <div class="slide-notes"><strong>📝 備考・解説:</strong> ARPANET…Advanced Research Projects Agency NETworkの略称
+マップURL：https://www.google.com/maps/@38.0309303,-116.6369397,5.88z
+?authuser=0&amp;entry=ttu&amp;g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D</div>
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-7">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 7 / 16</span>
+                <h3 class="doc-slide-title">ネットワークプロトコルとは？</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_7.png" alt="Slide 7: ネットワークプロトコルとは？" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_7.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">ネットワークプロトコルとは？</p>
+<p class="para-item">6</p>
+<p class="para-item">①“Hello, How are you?”</p>
+<p class="para-item">②“I’m fine. And you?”</p>
+<p class="para-item">③“Could you help me?”</p>
+<p class="para-item">④“Oh, What?”</p>
+<p class="para-item">人間の会話</p>
+</div>
+                    
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-8">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 8 / 16</span>
+                <h3 class="doc-slide-title">ネットワークプロトコルとは？</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_8.png" alt="Slide 8: ネットワークプロトコルとは？" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_8.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">ネットワークプロトコルとは？</p>
+<p class="para-item">7</p>
+<p class="para-item">①“コンピュータBは君かい？”</p>
+<p class="para-item">②“ちゃうよ”</p>
+<p class="para-item">コンピュータの会話</p>
+<p class="para-item">コンピュータA</p>
+<p class="para-item">コンピュータB</p>
+</div>
+                    <div class="slide-notes"><strong>📝 備考・解説:</strong> 年表を辿りながら学んでいく
+IPアドレスやコンピュータなど他分野の技術変遷も分かる</div>
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-9">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 9 / 16</span>
+                <h3 class="doc-slide-title">ネットワークプロトコルの種類</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_9.png" alt="Slide 9: ネットワークプロトコルの種類" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_9.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">ネットワークプロトコルの種類</p>
+<p class="para-item">歴代のネットワークプロトコルたち</p>
+<p class="para-item">8</p>
+<p class="para-item">優勝</p>
+</div>
+                    <div class="slide-notes"><strong>📝 備考・解説:</strong> IBM - Wikipedia
+https://ja.wikipedia.org/wiki/IBM
+日立製作所 – Wikipedia
+https://ja.wikipedia.org/wiki/日立製作所
+富士通 – Wikipedia
+https://ja.wikipedia.org/wiki/富士通
+日本電気 – Wikipedia
+https://ja.wikipedia.org/wiki/日本電気
+The Untold Story of the Internet How a 1969 Military Project Became the Backbone of the Cloud | by Enfiq | Medium
+https://enfiq.medium.com/the-untold-story-of-the-internet-how-a-1969-military-project-became-the-backbone-of-the-cloud-53245540d125
+国際標準化機構 - Wikipedia
+https://ja.wikipedia.org/wiki/国際標準化機構</div>
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-10">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 10 / 16</span>
+                <h3 class="doc-slide-title">9</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_10.png" alt="Slide 10: 9" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_10.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">9</p>
+<p class="para-item">SNA</p>
+<p class="para-item">プロトコル</p>
+<p class="para-item">FNA</p>
+<p class="para-item">プロトコル</p>
+<p class="para-item">HNA</p>
+<p class="para-item">プロトコル</p>
+<p class="para-item">DINA</p>
+<p class="para-item">プロトコル</p>
+<p class="para-item">かみ合わない</p>
+<p class="para-item">＝コンピュータ同士で会話できない</p>
+<p class="para-item">会話したい＝</p>
+<p class="para-item">標準化したい</p>
+</div>
+                    
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-11">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 11 / 16</span>
+                <h3 class="doc-slide-title">1977年にISOが提案</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_11.png" alt="Slide 11: 1977年にISOが提案" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_11.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">1977年にISOが提案</p>
+<p class="para-item">通信システムを階層的に定義した参照モデル</p>
+<p class="para-item">コンピュータ同士が会話するための役割が定義されている</p>
+<p class="para-item">10</p>
+<p class="para-item"><a href="https://www.infraexpert.com/study/networking3.html" target="_blank" rel="noopener">https://www.infraexpert.com/study/networking3.html</a></p>
+<p class="para-item">OSI=</p>
+<p class="para-item">“Open System Interconnection”</p>
+<p class="para-item">ISO=</p>
+<p class="para-item">“International Organizaion for Standardization”</p>
+<p class="para-item">1~7層まである</p>
+</div>
+                    <div class="slide-notes"><strong>📝 備考・解説:</strong> OSI…開放型システム間相互接続
+OSI参照モデル…
+　策定される以前のコンピュータネットワークは特定のベンダーのみで構成されており、異なるコンピュータ間通信が困難であった（ネットワーク構成方法が異なるため、通信において互換性がない、またはそれぞれの依存関係が悪影響）</div>
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-12">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 12 / 16</span>
+                <h3 class="doc-slide-title">11</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_12.png" alt="Slide 12: 11" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_12.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">11</p>
+<p class="para-item"><a href="https://www.infraexpert.com/study/networking3.html" target="_blank" rel="noopener">https://www.infraexpert.com/study/networking3.html</a></p>
+<p class="para-item">～各レイヤの名称～</p>
+<p class="para-item">アプリケーション層</p>
+<p class="para-item">プレゼンテーション層</p>
+<p class="para-item">セッション層</p>
+<p class="para-item">トランスポート層</p>
+<p class="para-item">ネットワーク層</p>
+<p class="para-item">データリンク層</p>
+<p class="para-item">物理（ブツリ）層</p>
+<p class="para-item">下</p>
+<p class="para-item">上</p>
+</div>
+                    
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-13">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 13 / 16</span>
+                <h3 class="doc-slide-title">12</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_13.png" alt="Slide 13: 12" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_13.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">12</p>
+<p class="para-item">OSI</p>
+<p class="para-item">プロトコル</p>
+<p class="para-item">かみ合う</p>
+<p class="para-item">＝コンピュータ同士で会話できる！</p>
+<p class="para-item">OSI</p>
+<p class="para-item">プロトコル</p>
+<p class="para-item">OSI</p>
+<p class="para-item">プロトコル</p>
+<p class="para-item">OSI</p>
+<p class="para-item">プロトコル</p>
+<p class="para-item">標準化</p>
+<p class="para-item">マルチ</p>
+<p class="para-item">ベンダー化</p>
+</div>
+                    
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-14">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 14 / 16</span>
+                <h3 class="doc-slide-title">ベンダーとは？</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_14.png" alt="Slide 14: ベンダーとは？" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_14.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">ベンダーとは？</p>
+<p class="para-item">”ベンダー”の例…自動販売機“Vending Machine”</p>
+<p class="para-item">13</p>
+<p class="para-item">自販機は飲み物等を“販売する”＝“Vend”</p>
+<p class="para-item">ベンダー“Vender”＝販売者（メーカ）</p>
+</div>
+                    <div class="slide-notes"><strong>📝 備考・解説:</strong> https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhNsSdULp9eUkYVsrcPGxEVJefcX9Xxf3pGgyJSW7f-t7_tckOs4gYY5DL-rT3v4NhKVidSDyk2ojczBg18z4Tycs37OCIxMW6dXbxHNhtCQDbkpY7mZRJk_tBD4mEzd0TV8rmvHo6rr3JM/s800/machine_jidouhanbaiki.png</div>
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-15">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 15 / 16</span>
+                <h3 class="doc-slide-title">今日のIT豆知識</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_15.png" alt="Slide 15: 今日のIT豆知識" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_15.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">Googleカレンダー</p>
+<p class="para-item">Zenn</p>
+<p class="para-item">VS Codeの拡張機能（ Draw.io ）</p>
+<p class="para-item">14</p>
+<p class="para-item">今日のIT豆知識</p>
+</div>
+                    
+                </div>
+            </div>
+        </article>
+        
+
+        <article class="doc-slide-card" id="doc-slide-16">
+            <div class="doc-slide-header">
+                <span class="slide-badge">Slide 16 / 16</span>
+                <h3 class="doc-slide-title">参考文献</h3>
+            </div>
+            <div class="doc-slide-body">
+                <div class="doc-slide-img-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_16.png" alt="Slide 16: 参考文献" class="doc-slide-img" loading="lazy" onclick="openLightbox('assets/20_ネットワークのいろは・改ver.2/slide_16.png')">
+                    <div class="img-hint">クリックで拡大</div>
+                </div>
+                <div class="doc-slide-content">
+                    <div class="slide-paragraphs">
+<p class="para-item">参考文献</p>
+<p class="para-item">図解標準 最新TCP/IPハンドブック</p>
+<p class="para-item">総務省｜令和元年版 情報通信白書｜情報システムの進化<a href="https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/r01/html/nd111140.html" target="_blank" rel="noopener">https://www.soumu.go.jp/johotsusintokei/whitepaper/ja/r01/html/nd111140.html</a></p>
+<p class="para-item">2回目:パーソナルコンピュータの歴史と現状<a href="https://www.bk.tsukuba.ac.jp/~mrlab/note/2013%E5%B9%B4%E5%BA%A6/2013_6-19_lecture_note.pdf" target="_blank" rel="noopener">https://www.bk.tsukuba.ac.jp/~mrlab/note/2013%E5%B9%B4%E5%BA%A6/2013_6-19_lecture_note.pdf</a></p>
+<p class="para-item">TCP/IP普及以前、すべては1万分の1だった!? － ＠IT<a href="https://atmarkit.itmedia.co.jp/fnetwork/tanpatsu/24tcpip/01.html" target="_blank" rel="noopener">https://atmarkit.itmedia.co.jp/fnetwork/tanpatsu/24tcpip/01.html</a></p>
+<p class="para-item">15</p>
+</div>
+                    
+                </div>
+            </div>
+        </article>
+        
+    </main>
+
+    <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+    <div class="drawer-panel" id="drawerPanel">
+        <div class="drawer-header">
+            <h3>📑 スライド目次 (16枚)</h3>
+            <button class="close-btn" onclick="toggleDrawer()">&times;</button>
+        </div>
+        <div class="drawer-list">
+            
+        <div class="drawer-item" onclick="goToSlide(1)" id="drawer-item-1">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_1.png" alt="Slide 1" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#1</span>
+                <span class="drawer-title">ネットワークのいろは・改</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(2)" id="drawer-item-2">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_2.png" alt="Slide 2" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#2</span>
+                <span class="drawer-title">目次</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(3)" id="drawer-item-3">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_3.png" alt="Slide 3" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#3</span>
+                <span class="drawer-title">ホストコンピュータの登場</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(4)" id="drawer-item-4">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_4.png" alt="Slide 4" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#4</span>
+                <span class="drawer-title">”汎用機”，”メインフレーム”とも称される</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(5)" id="drawer-item-5">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_5.png" alt="Slide 5" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#5</span>
+                <span class="drawer-title">パーソナルコンピュータ（PC）の登場</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(6)" id="drawer-item-6">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_6.png" alt="Slide 6" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#6</span>
+                <span class="drawer-title">ARPANET（アーパネット） 1969年…米国内の4つの大学・研究機関を接続する形で運用が開始</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(7)" id="drawer-item-7">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_7.png" alt="Slide 7" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#7</span>
+                <span class="drawer-title">ネットワークプロトコルとは？</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(8)" id="drawer-item-8">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_8.png" alt="Slide 8" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#8</span>
+                <span class="drawer-title">ネットワークプロトコルとは？</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(9)" id="drawer-item-9">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_9.png" alt="Slide 9" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#9</span>
+                <span class="drawer-title">ネットワークプロトコルの種類</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(10)" id="drawer-item-10">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_10.png" alt="Slide 10" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#10</span>
+                <span class="drawer-title">9</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(11)" id="drawer-item-11">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_11.png" alt="Slide 11" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#11</span>
+                <span class="drawer-title">1977年にISOが提案</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(12)" id="drawer-item-12">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_12.png" alt="Slide 12" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#12</span>
+                <span class="drawer-title">11</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(13)" id="drawer-item-13">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_13.png" alt="Slide 13" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#13</span>
+                <span class="drawer-title">12</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(14)" id="drawer-item-14">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_14.png" alt="Slide 14" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#14</span>
+                <span class="drawer-title">ベンダーとは？</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(15)" id="drawer-item-15">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_15.png" alt="Slide 15" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#15</span>
+                <span class="drawer-title">今日のIT豆知識</span>
+            </div>
+        </div>
+        
+
+        <div class="drawer-item" onclick="goToSlide(16)" id="drawer-item-16">
+            <img src="assets/20_ネットワークのいろは・改ver.2/slide_16.png" alt="Slide 16" class="drawer-thumb" loading="lazy">
+            <div class="drawer-info">
+                <span class="drawer-num">#16</span>
+                <span class="drawer-title">参考文献</span>
+            </div>
+        </div>
+        
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img src="" id="lightboxImg" alt="Enlarged Image">
+    </div>
+
+    <div class="help-modal" id="helpModal">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>⌨️ キーボード操作ショートカット</h3>
+            <button class="close-btn" onclick="toggleHelp()">&times;</button>
+        </div>
+        <table class="help-table">
+            <tr><td><span class="help-key">→</span> / <span class="help-key">Space</span></td><td>次のスライドへ進む</td></tr>
+            <tr><td><span class="help-key">←</span> / <span class="help-key">Backspace</span></td><td>前のスライドへ戻る</td></tr>
+            <tr><td><span class="help-key">Home</span> / <span class="help-key">End</span></td><td>最初 / 最後のスライドへ</td></tr>
+            <tr><td><span class="help-key">D</span></td><td>スライド / ドキュメント表示切替</td></tr>
+            <tr><td><span class="help-key">M</span></td><td>目次・サムネイル一覧の開閉</td></tr>
+            <tr><td><span class="help-key">F</span></td><td>全画面表示の切替</td></tr>
+            <tr><td><span class="help-key">T</span></td><td>ダーク / ライトテーマ切替</td></tr>
+            <tr><td><span class="help-key">Esc</span></td><td>目次・ポップアップを閉じる</td></tr>
+        </table>
+    </div>
+
+    <script>
+        const totalSlides = 16;
+        const assetFolder = "assets/20_ネットワークのいろは・改ver.2";
+        const slidesData = [{"num": 1, "title": "ネットワークのいろは・改", "src": "assets/20_ネットワークのいろは・改ver.2/slide_1.png"}, {"num": 2, "title": "目次", "src": "assets/20_ネットワークのいろは・改ver.2/slide_2.png"}, {"num": 3, "title": "ホストコンピュータの登場", "src": "assets/20_ネットワークのいろは・改ver.2/slide_3.png"}, {"num": 4, "title": "”汎用機”，”メインフレーム”とも称される", "src": "assets/20_ネットワークのいろは・改ver.2/slide_4.png"}, {"num": 5, "title": "パーソナルコンピュータ（PC）の登場", "src": "assets/20_ネットワークのいろは・改ver.2/slide_5.png"}, {"num": 6, "title": "ARPANET（アーパネット） 1969年…米国内の4つの大学・研究機関を接続する形で運用が開始", "src": "assets/20_ネットワークのいろは・改ver.2/slide_6.png"}, {"num": 7, "title": "ネットワークプロトコルとは？", "src": "assets/20_ネットワークのいろは・改ver.2/slide_7.png"}, {"num": 8, "title": "ネットワークプロトコルとは？", "src": "assets/20_ネットワークのいろは・改ver.2/slide_8.png"}, {"num": 9, "title": "ネットワークプロトコルの種類", "src": "assets/20_ネットワークのいろは・改ver.2/slide_9.png"}, {"num": 10, "title": "9", "src": "assets/20_ネットワークのいろは・改ver.2/slide_10.png"}, {"num": 11, "title": "1977年にISOが提案", "src": "assets/20_ネットワークのいろは・改ver.2/slide_11.png"}, {"num": 12, "title": "11", "src": "assets/20_ネットワークのいろは・改ver.2/slide_12.png"}, {"num": 13, "title": "12", "src": "assets/20_ネットワークのいろは・改ver.2/slide_13.png"}, {"num": 14, "title": "ベンダーとは？", "src": "assets/20_ネットワークのいろは・改ver.2/slide_14.png"}, {"num": 15, "title": "今日のIT豆知識", "src": "assets/20_ネットワークのいろは・改ver.2/slide_15.png"}, {"num": 16, "title": "参考文献", "src": "assets/20_ネットワークのいろは・改ver.2/slide_16.png"}];
+        
+        let currentSlide = 1;
+        let currentMode = 'presentation';
+
+        function updateSlideUI() {
+            const activeImg = document.getElementById('activeSlideImg');
+            activeImg.src = `${assetFolder}/slide_${currentSlide}.png`;
+            activeImg.alt = `Slide ${currentSlide}: ${slidesData[currentSlide - 1].title}`;
+            
+            document.getElementById('slideCounter').innerText = `${currentSlide} / ${totalSlides}`;
+            document.getElementById('currentSlideTitle').innerText = slidesData[currentSlide - 1].title;
+            
+            const pct = ((currentSlide) / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = `${pct}%`;
+            
+            document.getElementById('btnPrev').disabled = (currentSlide === 1);
+            document.getElementById('btnNext').disabled = (currentSlide === totalSlides);
+            
+            document.querySelectorAll('.drawer-item').forEach((el, idx) => {
+                el.classList.toggle('active', (idx + 1) === currentSlide);
+            });
+
+            history.replaceState(null, null, `#slide-${currentSlide}`);
+        }
+
+        function goToSlide(n) {
+            if (n < 1) n = 1;
+            if (n > totalSlides) n = totalSlides;
+            currentSlide = n;
+            updateSlideUI();
+            
+            if (currentMode === 'document') {
+                const target = document.getElementById(`doc-slide-${n}`);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+            closeDrawer();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                goToSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                goToSlide(currentSlide - 1);
+            }
+        }
+
+        function switchMode(mode) {
+            currentMode = mode;
+            const presView = document.getElementById('presentation-view');
+            const docView = document.getElementById('document-view');
+            const btnPres = document.getElementById('btn-pres-mode');
+            const btnDoc = document.getElementById('btn-doc-mode');
+            
+            if (mode === 'presentation') {
+                presView.style.display = 'flex';
+                docView.style.display = 'none';
+                btnPres.classList.add('active');
+                btnDoc.classList.remove('active');
+                updateSlideUI();
+            } else {
+                presView.style.display = 'none';
+                docView.style.display = 'block';
+                btnPres.classList.remove('active');
+                btnDoc.classList.add('active');
+                
+                setTimeout(() => {
+                    const target = document.getElementById(`doc-slide-${currentSlide}`);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 100);
+            }
+        }
+
+        function toggleDrawer() {
+            const drawer = document.getElementById('drawerPanel');
+            const overlay = document.getElementById('drawerOverlay');
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        function closeDrawer() {
+            document.getElementById('drawerPanel').classList.remove('open');
+            document.getElementById('drawerOverlay').classList.remove('open');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('network_circle_theme', next);
+        }
+
+        function toggleHelp() {
+            const modal = document.getElementById('helpModal');
+            modal.classList.toggle('open');
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log('Fullscreen error:', err);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        function openLightbox(src) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightbox').classList.add('open');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('open');
+        }
+
+        function copyCode(btn, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = btn.innerText;
+                btn.innerText = "✓ コピー完了";
+                btn.style.background = "#22c55e";
+                btn.style.color = "#fff";
+                setTimeout(() => {
+                    btn.innerText = orig;
+                    btn.style.background = "";
+                    btn.style.color = "";
+                }, 2000);
+            });
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            switch (e.key) {
+                case 'ArrowRight':
+                case 'ArrowDown':
+                case ' ':
+                case 'PageDown':
+                    e.preventDefault();
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                case 'ArrowUp':
+                case 'PageUp':
+                case 'Backspace':
+                    e.preventDefault();
+                    prevSlide();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    goToSlide(1);
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    goToSlide(totalSlides);
+                    break;
+                case 'f':
+                case 'F':
+                    toggleFullscreen();
+                    break;
+                case 'd':
+                case 'D':
+                    switchMode(currentMode === 'presentation' ? 'document' : 'presentation');
+                    break;
+                case 'm':
+                case 'M':
+                    toggleDrawer();
+                    break;
+                case 't':
+                case 'T':
+                    toggleTheme();
+                    break;
+                case '?':
+                    toggleHelp();
+                    break;
+                case 'Escape':
+                    closeDrawer();
+                    closeLightbox();
+                    document.getElementById('helpModal').classList.remove('open');
+                    break;
+            }
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const stage = document.getElementById('slideStage');
+        stage.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        stage.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) nextSlide();
+            if (touchEndX - touchStartX > 50) prevSlide();
+        }, { passive: true });
+
+        const savedTheme = localStorage.getItem('network_circle_theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#slide-')) {
+                const num = parseInt(hash.replace('#slide-', ''), 10);
+                if (!isNaN(num) && num >= 1 && num <= totalSlides) {
+                    goToSlide(num);
+                    return;
+                }
+            }
+            updateSlideUI();
+        });
+    </script>
+</body>
+</html>

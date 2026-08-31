@@ -1,0 +1,91 @@
+<head>
+	<meta charset="UTF-8">
+	<!--<link rel="stylesheet" href="command_doc_css.css">-->
+	<style>
+        .mode-group {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .mode-header {
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+        }
+
+        .prompt {
+            font-family: 'Courier New', monospace;
+            background: #333;
+            color: #00FF00; /* ターミナル風の緑 */
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .cmd-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cmd-table td, .cmd-table th {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+
+        .cmd-table code {
+            background: #eef;
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: #d63384;
+        }
+	</style>
+</head>
+<section id="router-commands">
+    <h2>Ciscoルータ 基本コマンド一覧</h2>
+    
+    <!-- モードごとのグループ -->
+    <div class="mode-group user-mode">
+        <div class="mode-header">
+            <span class="prompt">Router&gt;</span>
+            <h3>ユーザEXECモード</h3>
+        </div>
+        <table class="cmd-table">
+            <tr>
+                <th>コマンド</th>
+                <th>機能</th>
+                <th>備考</th>
+            </tr>
+            <tr>
+                <td><code>enable</code></td>
+                <td>特権EXECモードへ移行</td>
+                <td>Router# に変わる</td>
+            </tr>
+            <tr>
+                <td><code>exit</code></td>
+                <td>ログアウト</td>
+                <td>-</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="mode-group privileged-mode">
+        <div class="mode-header">
+            <span class="prompt">Router#</span>
+            <h3>特権EXECモード</h3>
+        </div>
+        <table class="cmd-table">
+            <tr>
+                <td><code>configure terminal</code></td>
+                <td>グローバル設定モードへ移行</td>
+                <td>(config)# に変わる</td>
+            </tr>
+            <!-- 他のコマンドも同様に -->
+        </table>
+    </div>
+</section>

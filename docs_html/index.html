@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ネットワークサークル Web資料ライブラリ</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --accent-rgb: 56, 189, 248;
+            --border-color: #334155;
+            --header-bg: rgba(15, 23, 42, 0.94);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            --radius: 12px;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e2e8f0;
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent: #0284c7;
+            --accent-hover: #0369a1;
+            --accent-rgb: 2, 132, 199;
+            --border-color: #e2e8f0;
+            --header-bg: rgba(255, 255, 255, 0.94);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Hiragino Sans", Meiryo, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header.portal-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 40px 20px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        [data-theme="light"] header.portal-header {
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+        }
+
+        .theme-toggle-pos {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .icon-btn {
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+        .icon-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .portal-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .portal-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 20px;
+        }
+
+        .portal-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .stat-item {
+            background: rgba(var(--accent-rgb), 0.1);
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(var(--accent-rgb), 0.2);
+            font-weight: 600;
+        }
+
+        .toolbar {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 0 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 1rem;
+            box-shadow: var(--shadow);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.25);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-tab {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-tab:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .filter-tab.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        main.cards-container {
+            max-width: 1200px;
+            margin: 25px auto 60px;
+            padding: 0 20px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .doc-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+        .doc-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(var(--accent-rgb), 0.6);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-thumb-link {
+            text-decoration: none;
+            display: block;
+        }
+
+        .card-thumb-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #0b1120;
+            overflow: hidden;
+        }
+
+        .card-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        .doc-card:hover .card-thumb {
+            transform: scale(1.03);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.85);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .slide-count-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+        }
+
+        .card-content {
+            padding: 18px 20px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .card-title a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .card-title a:hover {
+            color: var(--accent);
+        }
+
+        .card-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 14px;
+        }
+
+        .card-btn {
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border-color);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-secondary {
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+        .btn-secondary:hover {
+            color: var(--text-primary);
+            border-color: var(--text-secondary);
+        }
+
+        .empty-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            display: none;
+        }
+
+        footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            background: var(--header-bg);
+            padding: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 600px) {
+            main.cards-container {
+                grid-template-columns: 1fr;
+            }
+            .portal-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="portal-header">
+        <div class="theme-toggle-pos">
+            <button class="icon-btn" onclick="toggleTheme()" title="テーマ切替">🌓</button>
+        </div>
+        <h1 class="portal-title">🌐 ネットワークサークル 資料ライブラリ</h1>
+        <p class="portal-subtitle">Cisco Packet Tracer、ルータ設定、ネットワーク基礎・ルーティングプロトコルのWebスライド＆ドキュメント集</p>
+        <div class="portal-stats">
+            <span class="stat-item">📚 全 16 資料</span>
+            <span class="stat-item">📄 合計 188 スライド</span>
+            <span class="stat-item">⚡ 完全オフライン対応</span>
+        </div>
+    </header>
+
+    <div class="toolbar">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="資料タイトル・キーワード・コマンド名で検索... (例: Packet Tracer, ルータ, OSPF)">
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-cat="all">すべて (16)</button>
+            <button class="filter-tab" data-cat="pt_intro">🚀 PT 導入</button>
+            <button class="filter-tab" data-cat="pt_operation">⚙️ PT 基本操作</button>
+            <button class="filter-tab" data-cat="router_config">🔧 ルータ設定</button>
+            <button class="filter-tab" data-cat="routing">🔀 ルーティング</button>
+            <button class="filter-tab" data-cat="network_basics">🌐 基礎・歴史</button>
+            <button class="filter-tab" data-cat="reference">📖 リファレンス</button>
+        </div>
+    </div>
+
+    <main class="cards-container" id="cardsGrid">
+        
+        <div class="doc-card" data-category="pt_intro" data-search="cisco packet tracerの 導入（第3版） cisco packet tracerの導入（第3版） / 作成日：2026/05/10 / cisco networking academyアカウント作成 🚀 pt 導入・セットアップ">
+            <a href="Cisco Packet Tracerの導入（第3版）.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/Cisco Packet Tracerの導入（第3版）/slide_1.png" alt="Cisco Packet Tracerの 導入（第3版）" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-intro">🚀 PT 導入・セットアップ</span>
+                    <span class="slide-count-badge">📄 20 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="Cisco Packet Tracerの導入（第3版）.html">Cisco Packet Tracerの 導入（第3版）</a></h3>
+                <p class="card-desc">Cisco Packet Tracerの導入（第3版） / 作成日：2026/05/10 / Cisco Networking Academyアカウント作成</p>
+                <div class="card-actions">
+                    <a href="Cisco Packet Tracerの導入（第3版）.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="Cisco Packet Tracerの導入（第3版）.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/Cisco Packet Tracerの導入（第3版）.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="pt_intro" data-search="cisco packet tracerの導入 ～第6回nwサークル～ / cisco packet tracerとは / cisco networking academyが提供するcisco社公式のネットワークシミュレータ 🚀 pt 導入・セットアップ">
+            <a href="6_Cisco Packet Tracerの導入.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/6_Cisco Packet Tracerの導入/slide_1.png" alt="Cisco Packet Tracerの導入" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-intro">🚀 PT 導入・セットアップ</span>
+                    <span class="slide-count-badge">📄 28 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="6_Cisco Packet Tracerの導入.html">Cisco Packet Tracerの導入</a></h3>
+                <p class="card-desc">～第6回NWサークル～ / Cisco Packet Tracerとは / Cisco Networking Academyが提供するCisco社公式のネットワークシミュレータ</p>
+                <div class="card-actions">
+                    <a href="6_Cisco Packet Tracerの導入.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="6_Cisco Packet Tracerの導入.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/6_Cisco Packet Tracerの導入.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="pt_intro" data-search="cisco packet tracerの導入_修正版 ～第10回nwサークル～ / cisco packet tracerとは / cisco networking academyが提供するcisco社公式のネットワークシミュレータ 🚀 pt 導入・セットアップ">
+            <a href="6_Cisco Packet Tracerの導入_修正版.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/6_Cisco Packet Tracerの導入_修正版/slide_1.png" alt="Cisco Packet Tracerの導入_修正版" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-intro">🚀 PT 導入・セットアップ</span>
+                    <span class="slide-count-badge">📄 21 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="6_Cisco Packet Tracerの導入_修正版.html">Cisco Packet Tracerの導入_修正版</a></h3>
+                <p class="card-desc">～第10回NWサークル～ / Cisco Packet Tracerとは / Cisco Networking Academyが提供するCisco社公式のネットワークシミュレータ</p>
+                <div class="card-actions">
+                    <a href="6_Cisco Packet Tracerの導入_修正版.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="6_Cisco Packet Tracerの導入_修正版.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/6_Cisco Packet Tracerの導入_修正版.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="pt_operation" data-search="cisco packet tracerの 基本操作 cisco packet tracerの基本操作 / ～第7回nwサークル～ / 基本操作手順 ⚙️ pt 基本操作・構成">
+            <a href="7_Cisco Packet Tracerの基本操作.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/7_Cisco Packet Tracerの基本操作/slide_1.png" alt="Cisco Packet Tracerの 基本操作" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-operation">⚙️ PT 基本操作・構成</span>
+                    <span class="slide-count-badge">📄 21 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="7_Cisco Packet Tracerの基本操作.html">Cisco Packet Tracerの 基本操作</a></h3>
+                <p class="card-desc">Cisco Packet Tracerの基本操作 / ～第7回NWサークル～ / 基本操作手順</p>
+                <div class="card-actions">
+                    <a href="7_Cisco Packet Tracerの基本操作.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="7_Cisco Packet Tracerの基本操作.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/7_Cisco Packet Tracerの基本操作.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="pt_operation" data-search="cisco packet tracer入門 ～第14回ネットワークサークル～ / nasアクセス方法 / nasアクセス設定① ⚙️ pt 基本操作・構成">
+            <a href="14_.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/14_/slide_1.png" alt="Cisco Packet Tracer入門" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-operation">⚙️ PT 基本操作・構成</span>
+                    <span class="slide-count-badge">📄 8 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="14_.html">Cisco Packet Tracer入門</a></h3>
+                <p class="card-desc">～第14回ネットワークサークル～ / NASアクセス方法 / NASアクセス設定①</p>
+                <div class="card-actions">
+                    <a href="14_.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="14_.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/14_.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="router_config" data-search="ptルータの 基本設定・操作 ptルータの基本設定・操作 / ～第10回nwサークル～ / 接続設定…p2~ 🔧 ルータ基本設定">
+            <a href="10_PTルータの基本設定.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/10_PTルータの基本設定/slide_1.png" alt="PTルータの 基本設定・操作" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-config">🔧 ルータ基本設定</span>
+                    <span class="slide-count-badge">📄 8 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="10_PTルータの基本設定.html">PTルータの 基本設定・操作</a></h3>
+                <p class="card-desc">PTルータの基本設定・操作 / ～第10回NWサークル～ / 接続設定…p2~</p>
+                <div class="card-actions">
+                    <a href="10_PTルータの基本設定.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="10_PTルータの基本設定.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/10_PTルータの基本設定.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="router_config" data-search="ptルータの基本設定 ～第9回nwサークル～ / サークル資料に関して / googleドライブの公開urlhttps://drive.google.com/drive/folders/1yhna8jg5ulxvuz55kglpchxqpotzk-tp 🔧 ルータ基本設定">
+            <a href="9_PTルータの基本設定.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/9_PTルータの基本設定/slide_1.png" alt="PTルータの基本設定" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-config">🔧 ルータ基本設定</span>
+                    <span class="slide-count-badge">📄 8 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="9_PTルータの基本設定.html">PTルータの基本設定</a></h3>
+                <p class="card-desc">～第9回NWサークル～ / サークル資料に関して / Googleドライブの公開URLhttps://drive.google.com/drive/folders/1yhnA8Jg5ulxvuZ55kGLPcHXQPOTzk-Tp</p>
+                <div class="card-actions">
+                    <a href="9_PTルータの基本設定.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="9_PTルータの基本設定.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/9_PTルータの基本設定.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="router_config" data-search="ripとospf ～第19回ネットワークサークル～ / ospfを知る 🔧 ルータ基本設定">
+            <a href="19_RIPvsOSPF_2026-06-29.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/19_RIPvsOSPF_2026-06-29/slide_1.png" alt="RIPとOSPF" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-config">🔧 ルータ基本設定</span>
+                    <span class="slide-count-badge">📄 3 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="19_RIPvsOSPF_2026-06-29.html">RIPとOSPF</a></h3>
+                <p class="card-desc">～第19回ネットワークサークル～ / OSPFを知る</p>
+                <div class="card-actions">
+                    <a href="19_RIPvsOSPF_2026-06-29.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="19_RIPvsOSPF_2026-06-29.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/19_RIPvsOSPF_2026-06-29.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="routing" data-search="前回のパケトレおさらい ～第16回ネットワークサークル～ / ルータを配置する / ルータ“2911”（例）をクリック 🔀 ルーティング・プロトコル">
+            <a href="16_2.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/16_2/slide_1.png" alt="前回のパケトレおさらい" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-routing">🔀 ルーティング・プロトコル</span>
+                    <span class="slide-count-badge">📄 5 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="16_2.html">前回のパケトレおさらい</a></h3>
+                <p class="card-desc">～第16回ネットワークサークル～ / ルータを配置する / ルータ“2911”（例）をクリック</p>
+                <div class="card-actions">
+                    <a href="16_2.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="16_2.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/16_2.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="network_basics" data-search="ネットワークのいろは ～第13回nwサークル～ / ネットワークの歴史 / ネットワークの歴史 🌐 ネットワーク基礎・歴史">
+            <a href="13_ネットワークのいろは.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/13_ネットワークのいろは/slide_1.png" alt="ネットワークのいろは" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-basics">🌐 ネットワーク基礎・歴史</span>
+                    <span class="slide-count-badge">📄 11 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="13_ネットワークのいろは.html">ネットワークのいろは</a></h3>
+                <p class="card-desc">～第13回NWサークル～ / ネットワークの歴史 / ネットワークの歴史</p>
+                <div class="card-actions">
+                    <a href="13_ネットワークのいろは.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="13_ネットワークのいろは.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/13_ネットワークのいろは.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="network_basics" data-search="ネットワークのいろは・改 バージョン：1.0 / コンピュータネットワーク / ホストコンピュータの登場 🌐 ネットワーク基礎・歴史">
+            <a href="20_ネットワークのいろは・改.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/20_ネットワークのいろは・改/slide_1.png" alt="ネットワークのいろは・改" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-basics">🌐 ネットワーク基礎・歴史</span>
+                    <span class="slide-count-badge">📄 16 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="20_ネットワークのいろは・改.html">ネットワークのいろは・改</a></h3>
+                <p class="card-desc">バージョン：1.0 / コンピュータネットワーク / ホストコンピュータの登場</p>
+                <div class="card-actions">
+                    <a href="20_ネットワークのいろは・改.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="20_ネットワークのいろは・改.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/20_ネットワークのいろは・改.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="network_basics" data-search="ネットワークのいろは・改 バージョン：2.0 / コンピュータネットワーク / ホストコンピュータの登場 🌐 ネットワーク基礎・歴史">
+            <a href="20_ネットワークのいろは・改ver.2.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/20_ネットワークのいろは・改ver.2/slide_1.png" alt="ネットワークのいろは・改" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-basics">🌐 ネットワーク基礎・歴史</span>
+                    <span class="slide-count-badge">📄 16 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="20_ネットワークのいろは・改ver.2.html">ネットワークのいろは・改</a></h3>
+                <p class="card-desc">バージョン：2.0 / コンピュータネットワーク / ホストコンピュータの登場</p>
+                <div class="card-actions">
+                    <a href="20_ネットワークのいろは・改ver.2.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="20_ネットワークのいろは・改ver.2.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/20_ネットワークのいろは・改ver.2.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="network_basics" data-search="ネットワークのいろは・改 バージョン：1.0 / コンピュータネットワーク / ホストコンピュータの登場 🌐 ネットワーク基礎・歴史">
+            <a href="20_ネットワークの歴史・改.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/20_ネットワークの歴史・改/slide_1.png" alt="ネットワークのいろは・改" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-basics">🌐 ネットワーク基礎・歴史</span>
+                    <span class="slide-count-badge">📄 16 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="20_ネットワークの歴史・改.html">ネットワークのいろは・改</a></h3>
+                <p class="card-desc">バージョン：1.0 / コンピュータネットワーク / ホストコンピュータの登場</p>
+                <div class="card-actions">
+                    <a href="20_ネットワークの歴史・改.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="20_ネットワークの歴史・改.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/20_ネットワークの歴史・改.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="network_basics" data-search="第15回 ～第15回ネットワークサークル～ / 今日のit豆知識① / chrome flags…chromeやbraveなどのchromiumベースのブラウザに搭載されている試験運用設定→ブラウザ動作の高速化や縦タブバーなど，通常は設定できない機能が豊富（※機能の移り変わり激しい） 🌐 ネットワーク基礎・歴史">
+            <a href="15.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/15/slide_1.png" alt="第15回" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-basics">🌐 ネットワーク基礎・歴史</span>
+                    <span class="slide-count-badge">📄 4 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="15.html">第15回</a></h3>
+                <p class="card-desc">～第15回ネットワークサークル～ / 今日のIT豆知識① / Chrome Flags…ChromeやBraveなどのChromiumベースのブラウザに搭載されている試験運用設定→ブラウザ動作の高速化や縦タブバーなど，通常は設定できない機能が豊富（※機能の移り変わり激しい）</p>
+                <div class="card-actions">
+                    <a href="15.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="15.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/15.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="network_basics" data-search="～第16回ネットワークサークル～ 2026/05/18 / インターネットの起源 / 1969年… “arpanet”（アーパネット）の構築米国防総省“arpa”（アーパ）が軍事・研究 🌐 ネットワーク基礎・歴史">
+            <a href="16_1.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/16_1/slide_1.png" alt="～第16回ネットワークサークル～" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-basics">🌐 ネットワーク基礎・歴史</span>
+                    <span class="slide-count-badge">📄 3 スライド</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="16_1.html">～第16回ネットワークサークル～</a></h3>
+                <p class="card-desc">2026/05/18 / インターネットの起源 / 1969年… “ARPANET”（アーパネット）の構築米国防総省“ARPA”（アーパ）が軍事・研究</p>
+                <div class="card-actions">
+                    <a href="16_1.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="16_1.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    <a href="../docs_powerpoint/16_1.pptx" download class="card-btn btn-secondary" title="元のPPTXファイルをダウンロード">📥 PPTX</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="doc-card" data-category="reference" data-search="ciscoルータ 基本コマンド一覧 ユーザexecモード、特権execモード、グローバルコンフィギュレーションモード等の主要cliコマンド一覧リファレンス。 📖 コマンド一覧">
+            <a href="command_doc.html" class="card-thumb-link">
+                <div class="card-thumb-box">
+                    <img src="assets/10_PTルータの基本設定/slide_1.png" alt="Ciscoルータ 基本コマンド一覧" class="card-thumb" loading="lazy">
+                    <span class="card-badge badge-ref">📖 コマンド一覧</span>
+                    <span class="slide-count-badge">📄 リファレンス</span>
+                </div>
+            </a>
+            <div class="card-content">
+                <h3 class="card-title"><a href="command_doc.html">Ciscoルータ 基本コマンド一覧</a></h3>
+                <p class="card-desc">ユーザEXECモード、特権EXECモード、グローバルコンフィギュレーションモード等の主要CLIコマンド一覧リファレンス。</p>
+                <div class="card-actions">
+                    <a href="command_doc.html" class="card-btn btn-primary">🖥️ スライドを見る</a>
+                    <a href="command_doc.html#doc-slide-1" onclick="localStorage.setItem('prefer_mode', 'doc')" class="card-btn btn-outline">📄 ドキュメント</a>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="empty-message" id="emptyMsg">一致する資料が見つかりませんでした。別のキーワードでお試しください。</div>
+    </main>
+
+    <footer>
+        <p>© ネットワークサークル 資料ライブラリ | Generated for Web Presentation & Learning</p>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('network_circle_theme', next);
+        }
+
+        const savedTheme = localStorage.getItem('network_circle_theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        const searchInput = document.getElementById('searchInput');
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const cards = document.querySelectorAll('.doc-card');
+        const emptyMsg = document.getElementById('emptyMsg');
+        
+        let currentCat = 'all';
+        let searchQuery = '';
+
+        function filterCards() {
+            let visibleCount = 0;
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                const cardSearch = card.getAttribute('data-search');
+                
+                const matchesCat = (currentCat === 'all' || cardCat === currentCat);
+                const matchesQuery = (!searchQuery || cardSearch.includes(searchQuery));
+                
+                if (matchesCat && matchesQuery) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            emptyMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.trim().toLowerCase();
+            filterCards();
+        });
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentCat = tab.getAttribute('data-cat');
+                filterCards();
+            });
+        });
+    </script>
+</body>
+</html>
