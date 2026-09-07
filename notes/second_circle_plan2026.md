@@ -24,6 +24,7 @@
    Linuxコマンドを体験しながらdocx/xmlの関係を学ぶ（一石二鳥）
    VirtualBox/WSLの使用検討
    SCPの学習
+   vi/nanoの体験
 4. AI
    ローカルLLMの体験（LlamaなどのローレベルLLMを用いてThinkingなどを目で見て学ぶ）
 
@@ -42,3 +43,4 @@
 - Dockerを盛込みたい
 - VS Codeを使用する学習内容で分けてみる
 - Google Chromeの便利な使い方
+- セキュリティ要素を入れてみたい
