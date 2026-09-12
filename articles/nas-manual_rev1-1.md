@@ -3,7 +3,7 @@ title: "NAS（ネットワーク接続ストレージ）接続方法ガイド"
 emoji: "🗂️"
 type: "tech"
 topics: ["nas", "windows", "network"]
-published: true
+published: false
 ---
 ## 諸注意
 
