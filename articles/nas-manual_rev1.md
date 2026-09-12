@@ -3,7 +3,7 @@ title: "NAS（ネットワーク共有ストレージ）アクセス方法ガイ
 emoji: "🗂️"
 type: "tech"
 topics: ["nas", "windows", "network"]
-published: true
+published: false
 ---
 
 ## NASアクセスガイド
