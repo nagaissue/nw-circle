@@ -1,0 +1,5 @@
+interface:
+  display_name: "Create Diary"
+  short_description: "Generate a diary entry based on your input"
+policy:
+  allow_implicit_invocation: false
