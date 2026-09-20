@@ -60,3 +60,6 @@
 - GitHub Codespacesを活用する
 - VS Codeの使い方を習得する
 - Google Chromeの便利な使い方を盛込む
+- WindowsとLinuxの連携
+- WindowsとCisco PTの連携
+- NASの機能調査、利用拡大を図る
