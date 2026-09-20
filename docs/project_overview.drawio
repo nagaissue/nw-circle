@@ -1,0 +1,67 @@
+<mxfile host="app.diagrams.net" version="24.0.0">
+  <diagram name="nw-circle概要" id="nw-circle-overview">
+    <mxGraphModel dx="800" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="user" value="利用者: 学生&#10;ブラウザ閲覧" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#1565c0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="vercel" value="Vercel&#10;nw-circle.vercel.app" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;fontColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="260" y="40" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="github" value="GitHub&#10;nagaissue/nw-circle" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="500" y="40" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="author" value="執筆者: サークル員&#10;Zenn CLI / HTML作成" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="740" y="40" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="hub" value="index.html&#10;ルートハブ" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#ef6c00;" vertex="1" parent="1">
+          <mxGeometry x="260" y="170" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="slides" value="docs_html/index.html&#10;資料ライブラリポータル" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#2e7d32;" vertex="1" parent="1">
+          <mxGeometry x="40" y="300" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="docs" value="docs/index.html&#10;ドキュメント・計画書" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#2e7d32;" vertex="1" parent="1">
+          <mxGeometry x="280" y="300" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="notes" value="notes/index.html&#10;リンク集・ナレッジ" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#2e7d32;" vertex="1" parent="1">
+          <mxGeometry x="520" y="300" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="articles" value="articles/*.md&#10;Zenn記事" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="760" y="300" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="themes" value="学習テーマ: 通信 / OS / クラウド / AI&#10;目標: 実機VLAN構築" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="40" y="430" width="440" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="gov" value="AGENTS.md / HANDOVER.md / skills&#10;ガバナンス" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="430" width="400" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;jettySize=auto;orthogonalLoop=1;" edge="1" parent="1" source="user" target="vercel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="github" target="vercel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;" edge="1" parent="1" source="author" target="github">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="vercel" target="hub">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="hub" target="slides">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="hub" target="docs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="hub" target="notes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" edge="1" parent="1" source="slides" target="themes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
