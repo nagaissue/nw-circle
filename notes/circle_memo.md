@@ -63,3 +63,4 @@
 - WindowsとLinuxの連携
 - WindowsとCisco PTの連携
 - NASの機能調査、利用拡大を図る
+- WSLでwgetのメリットを体験する
