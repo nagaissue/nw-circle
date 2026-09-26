@@ -1,7 +1,11 @@
 # nw-circle
 
-[リポジトリ閲覧ページ](https://nw-circle.vercel.app/)
+ネットワークサークルの活動資料を共有しています  
+Zennブログはサークルとプライベートをまとめて公開する予定です
 
+[資料閲覧用のVercelサイト(WIP)](https://nw-circle.vercel.app/)
+
+<!--
 ## リポジトリ構成
 
 ```text
@@ -26,3 +30,4 @@
 ├─ package-lock.json
 └─ skills-lock.json
 ```
+-->
