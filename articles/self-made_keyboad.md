@@ -1,7 +1,7 @@
 ---
-title: "分割「もできる」キーボード制作"
+title: "分割「もできる」自作キーボード"
 emoji: "⌨"
-type: "idea" # tech: 技術記事 / idea: アイデア
-topics: ["Keyboad"]
+type: "tech" # tech: 技術記事 / idea: アイデア
+topics: ["Keyboad", "KiCad"]
 published: false
 ---
