@@ -58,7 +58,6 @@ published: false
 ### 3.3 クラウド（発展）
 
 - AWSなどを用いたクラウド構築の紹介
-- AWS資格取得に向けた学習内容の紹介
 - オンプレミス環境との連携ネットワーク
 - マイクラサーバ構築などを題材にしたクラウド活用
 - Dockerなどのコンテナ技術
@@ -72,7 +71,6 @@ published: false
 - Git/GitHubを用いたプログラムやプロジェクトの管理
 - GitHubのIssueやPull Requestの基本
 - GitHub CodespacesとVS Codeの紹介
-- Discordチャンネルに投稿したAI関連のナレッジの振り返り
 
 ## 4. 改訂履歴
 
