@@ -41,7 +41,7 @@ PCのデスクトップ画面下部（タスクバー）にある**検索バー�
 
 ![NAS Access](/images/3.png)
 
-![NAS Access](/images/4.png)
+![NAS Access](/images/4.1.png)
 
 :::message
 ￥と`\`（バックスラッシュ）はフォントが異なりますが同義です。どちらで入力されても問題ありません（ただし入力は半角英数字）。
