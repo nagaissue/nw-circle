@@ -72,8 +72,7 @@ published: true
 - Git/GitHubを学習内容に盛り込む（Codespaces活用）
 - VS Codeの使用方法を学ぶ
 
----
-## 5. 改訂履歴
+# 改訂履歴
 
 | Ver. | 更新日 |
 | --- | --- |
