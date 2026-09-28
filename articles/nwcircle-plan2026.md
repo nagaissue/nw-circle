@@ -5,6 +5,10 @@ type: "idea" # tech: 技術記事 / idea: アイデア
 topics: ["circleplan"]
 published: true
 ---
+:::message
+**注意**
+対象読者はネットワークサークルのメンバーです
+:::
 
 # 概要（後期）
 
@@ -36,7 +40,6 @@ published: true
 
 ## 1. 通信ネットワーク
 
-- Cisco Packet Tracerや実機を使用した通信ネットワーク構築の学習は継続する
 - ネットワークの歴史を学ぶ
 - OSI参照モデルの各レイヤーを体系的に学び、レイヤーごとに深掘りする
 - 冗長通信ネットワーク構築を盛り込む
@@ -45,32 +48,37 @@ published: true
 
 ## 2. クラウド
 
-- AWSなどを用いたクラウド構築を行う
+- AWSを用いたクラウド構築を行う
 - AWS資格取得に向けた内容を盛り込む
-- 対象は主に3年生以上とし、受講にはAWSアカウントが必要となる
 - マイクラサーバ構築を題材として検討する
-- オンプレミス環境との連携ネットワークを扱う
+
+:::message
+AWSアカウントが必要
+:::
 
 ## 3. Windows/Linux OS
 
-- LinuxやWindowsなどのOSを学習する
+- LinuxやWindowsなどのOSを知る
 - Windowsターミナルの基本操作を学ぶ
+- Linuxシェルの基本操作を学ぶ
 - Linuxコマンドを体験しながら、docx/XMLの関係を学ぶ
-- VirtualBoxやWSLの使用を検討する
-- SCPを学習する
-- vi/nanoを体験する
-- Docker（コンテナ）に触れる
+- VirtualBoxやWSLを活用する
+- SSH、SCPを学習する
+- vi/vim、nano、emacsエディタを体験する
+- Dockerに触れる
 
 ## 4. AI・Git/GitHub
 
-- 生成AI、AIエージェント、AI IDEなどAIの種類を学ぶ
+- 生成AI、AIエージェント、AI IDEなどAIの種類を知る
 - ローカルLLMを体験する
-- Llamaなどの比較的低レイヤーのLLMを用いて、Thinkingなどの処理を目で見て学ぶ
 - これまで使用してきたAIを紹介する
-- 自作Agent Skillsの紹介
-- AIとOS、または通信ネットワークとAWSを組み合わせた学習も検討する
-- Git/GitHubを学習内容に盛り込む（Codespaces活用）
-- VS Codeの使用方法を学ぶ
+- Agent Skillsの紹介（自作含む）
+- Git/GitHubを学習内容に盛り込む
+- VS Codeを活用する
+
+:::message
+GitHubアカウントが必要
+:::
 
 # 改訂履歴
 
