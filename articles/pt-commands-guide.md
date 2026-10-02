@@ -3,7 +3,7 @@ title: "Cisco PT設定コマンド一覧"
 emoji: "🔍"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["cisco", "cli", "network"]
-published: false
+published: true
 ---
 
 ## 基本設定
