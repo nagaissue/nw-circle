@@ -6,7 +6,7 @@ topics: ["cisco", "cli", "network"]
 published: true
 ---
 
-## 基本設定
+## モード概要
 
 ### ユーザEXECモード
 
@@ -18,14 +18,71 @@ published: true
 
 | モード | 機能 | コマンド | 省略・補完 | 備考 |
 |---|---|---|---|---|
+| | グローバルコンフィグレーションモードへ移行 | `configure terminal` | `conf t` | |
+
+### グローバルコンフィグレーションモード
+
+| モード | 機能 | コマンド | 省略・補完 | 備考 |
+|---|---|---|---|---|
+| | ラインコンフィグレーションモードへ移行 | `line console 0` | `lin con 0` | |
+
+## IPv4アドレッシング
+
+| モード | 機能 | コマンド | 省略・補完 | 備考 |
+|---|---|---|---|---|
+| `Router#` | IPv4インタフェース状態確認 | `show ip interface brief` | `sho ip int b` | |
+| `Router(config)#` | インタフェースコンフィグレーションモードへ移行 | `interface [インタフェース名]` | `int [インタフェース名]` | 例：int gi0/0 |
+| `Router(config-if)#` | IPv4アドレッシング | `ip address [IPv4アドレス] [サブネットマスク]` | | 例：ip add 192.168.0.1 255.255.255.0 |
+| | インタフェース有効化 | `no shutdown` | `no sh` | |
+| | 説明文の記述 | `description [コメント]` | `des [コメント]` | 地味に大事 |
+
+## ルーティング
+
+### 共通・静的ルーティング
+
+| モード | 機能 | コマンド | 省略・補完 | 備考 |
+|---|---|---|---|---|
+| `Router#` | IPv4ルーティングテーブル確認 | `show ip route` | `sho ip rou` | |
+| `Router(config)#` | デフォルトルートの設定 | `ip route 0.0.0.0 0.0.0.0 [隣接インタフェースのIPアドレスまたはインタフェース名]` | | |
+| | ルーティングプロトコルコンフィグレーションモードへ移行 | `router [プロトコル名]` | | 例：router rip |
+
+### RIPルーティング
+
+| モード | 機能 | コマンド | 省略・補完 | 備考 |
+|---|---|---|---|---|
+| `Router(config-router)#` | ルーティングするネットワークを指定 | `network [ネットワークアドレス]` | | 例：network 192.168.0.0 |
+| | RIPv2有効化 | `version 2` | | |
+
+### OSPFルーティング
+
+| モード | 機能 | コマンド | 省略・補完 | 備考 |
+|---|---|---|---|---|
+| `Router(config)#` | ルーティングプロセスを起動 | `router ospf [PROCESS NUMBER]` | `rou o [PROCESS NUMBER]` | 例：router ospf 1 |
+| `Router(config-router)#` | OSPFで広告するネットワークとエリアを指定 | `network [NETWORK ADDRESS] [WILDCARD MASK] area [AREA NUMBER]` | | 例：network 192.168.0.0 0.0.0.0 area 0 |
+
+## DHCP
+
+| モード | 機能 | コマンド | 省略・補完 | 備考 |
+|---|---|---|---|---|
+| `Router(config)#` | DHCPコンフィグレーションモードへ移行 | `ip dhcp pool [任意のプール名]` | `ip dh p [任意のプール名]` | 例：ip dhcp pool 1 |
+
+### DHCPコンフィグレーションモード
+
+| モード | 機能 | コマンド | 省略・補完 | 備考 |
+|---|---|---|---|---|
+| `Router(dhcp-config)#` | DHCPを有効化するネットワークの指定 | `network [ネットワークアドレス] [サブネットマスク]` | | 例：network 192.168.0.0 255.255.255.0 |
+
+## その他
+
+### 特権EXECモード
+
+| モード | 機能 | コマンド | 省略・補完 | 備考 |
+|---|---|---|---|---|
 | `Router#` | 設定表示 | `show running-config` | `sho run` | |
 | | 設定の保存 | `copy running-config startup-config` | `cop run sta` | |
 | | 通信確認 | `ping [宛先IPアドレス]` | | 例：ping 192.168.0.1 |
-| | IPv4インタフェース状態確認 | `show ip interface brief` | `sho ip int b` | |
 | | インタフェース詳細確認 | `show interface [インタフェース名]` | `sho int [インタフェース名]` | 例：sho int gi0/0 |
-| | IPv4ルーティングテーブル確認 | `show ip route` | `sho ip rou` | |
 | | 隣接機器の情報を表示 | `show cdp neighbors` | `sho cdp nei` | |
-| | グローバルコンフィグレーションモードへ移行 | `configure terminal` | `conf t` | |
 
 ### グローバルコンフィグレーションモード
 
@@ -33,12 +90,8 @@ published: true
 |---|---|---|---|---|
 | `Router(config)#` | DNS名前解決の無効化 | `no ip domain-lookup` | | ※最初に設定することを推奨 |
 | | ホスト名の設定 | `hostname [ホスト名]` | | 例：hostname R1 |
-| | イネーブルパスワードの設定 | `enable password [パスワード]` | `ena pas [パスワード]` | 本階層の移行時に要求される |
+| | イネーブルパスワードの設定 | `enable password [パスワード]` | `ena pas [パスワード]` | 特権EXECモードへの移行時に要求される |
 | | IPv6ルーティング有効化 | `ipv6 unicast-routing` | | IPv6を使用する際は必須 |
-| | ラインコンフィグレーションモードへ移行 | `line console 0` | `lin con 0` | |
-| | インタフェースコンフィグレーションモードへ移行 | `interface [インタフェース名]` | `int [インタフェース名]` | 例：int gi0/0 |
-| | ルーティングプロトコルコンフィグレーションモードへ移行 | `router [プロトコル名]` | | 例：router rip |
-| | DHCPコンフィグレーションモードへ移行 | `ip dhcp pool [任意のプール名]` | `ip dh p [任意のプール名]` | 例：ip dhcp pool 1 |
 
 ### ラインコンフィグレーションモード
 
@@ -48,39 +101,3 @@ published: true
 | | 自動ログアウト機能の無効化 | `exec-timeout 0 0` | | |
 | | コマンド入力の割込みを有効化 | `logging synchronous` | `logg→Tabキーx2` | |
 | | 特権EXECモードの常時アクセス許可 | `privilege level 15` | `priv→Tabキー→15` | ログイン直後から特権EXECモード |
-
-## アドレッシング
-
-### インタフェースコンフィグレーションモード
-
-| モード | 機能 | コマンド | 省略・補完 | 備考 |
-|---|---|---|---|---|
-| `Router(config-if)#` | インタフェース有効化 | `no shutdown` | `no sh` | |
-| | IPv4アドレッシング | `ip address [IPv4アドレス] [サブネットマスク]` | | 例：ip add 192.168.0.1 255.255.255.0 |
-| | 説明文の記述 | `description [コメント]` | `des [コメント]` | 地味に大事 |
-
-## RIPルーティング
-
-### ルーティングプロトコルコンフィグレーションモード
-
-| モード | 機能 | コマンド | 省略・補完 | 備考 |
-|---|---|---|---|---|
-| `Router(config-router)#` | ルーティングするネットワークを指定 | `network [ネットワークアドレス]` | | network 192.168.0.0 |
-| | RIPv2有効化 | `version 2` | | |
-| | デフォルトルートの設定 | `ip route 0.0.0.0 0.0.0.0 [隣接インタフェースのIPアドレスまたはインタフェース名]` | | |
-
-## OSPFルーティング
-
-| 現在のモード | コマンド | コマンド補完 | コマンド例 | 機能 | 備考 |
-|---|---|---|---|---|---|
-| `Router#` | `configure terminal` | `conf t` | | グローバル設定モードに昇格 | |
-| `Router(config)#` | `router ospf [PROCCESS NUMBER]` | `rou o [PROCCESS NUMBER]` | `router ospf 1` | ルーティングプロセスを起動する | |
-| `Router(config-router)#` | `network [NETWORK ADDRESS] [WILDCARD MASK] area [AREA NUMBER]` | | `network 192.168.0.0 0.0.0.0 area 0` | ルータプロセスを定義する | |
-
-## DHCP
-
-### DHCPコンフィグレーションモード
-
-| モード | 機能 | コマンド | 省略・補完 | 備考 |
-|---|---|---|---|---|
-| `Router(dhcp-config)#` | DHCPを有効化するネットワークの指定 | `network [ネットワークアドレス] [サブネットマスク]` | | 例：network 192.168.0.0 255.255.255.0 |
