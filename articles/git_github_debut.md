@@ -6,6 +6,10 @@ topics: [CLI, Git, GitHub, VSCode]
 published: true
 ---
 
+# はじめに
+本記事ではGit/GitHubをとりあえず使用できるようにすることを目標に公開します。  
+Git/GitHubの概念や使用方法の具体的な説明は割愛します。今後それらも執筆していく所存です。
+
 :::message
 **注意**
 内容の一部はサークルメンバーのみ参考になることがあります。
@@ -15,6 +19,9 @@ published: true
 
 ## GitHubとは
 GitHubはクラウド上でプログラムコードなどのファイルデータを一元管理できるプラットフォーム（PaaS）です。  
+このロゴが目印です。
+[![GitHub_Logo](https://skillicons.dev/icons?i=github)](https://skillicons.dev)
+
 GitHubでは、データを管理するために“リポジトリ（Repository）”という箱を作成します。  
 
 - GitHubのイメージ図
