@@ -3,7 +3,7 @@ title: "Git/GitHubデビュー"
 emoji: "🐱"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [CLI, Git, GitHub, VSCode]
-published: false
+published: true
 ---
 
 :::message
