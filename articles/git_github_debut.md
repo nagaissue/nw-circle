@@ -6,14 +6,13 @@ topics: [CLI, Git, GitHub, VSCode]
 published: false
 ---
 
-> まともな記事を執筆することは今回が初です。Zennブロガーとして精進します。
-
 :::message
 **注意**
 内容の一部はサークルメンバーのみ参考になることがあります。
 :::
 
 # Git/GitHubってなんぞ
+
 ## GitHubとは
 GitHubはクラウド上でプログラムコードなどのファイルデータを一元管理できるプラットフォーム（PaaS）です。  
 GitHubでは、データを管理するために“リポジトリ（Repository）”という箱を作成します。  
@@ -42,8 +41,9 @@ GitはGitHubリポジトリを操作するためのツールです。基本的�
 
 https://git-scm.com/
 
-# GIT(Get It Tried)
-Git/GitHubを簡単に説明したところで、早速Git/GitHubに挑戦してみましょう。
+# Git/GitHubのセットアップ
+Git/GitHubを簡単に説明したところで、早速Git/GitHubに挑戦してみましょう。  
+Git/GitHubが使用できる段階までハンズオン形式で説明します。
 
 ## GitHubの導入
 まずはGitHubアカウントを作成しましょう。GitHubのホームページにアクセスします。  
@@ -83,7 +83,7 @@ Googleアカウントを選択します。
 
 ## Gitのインストール
 :::message
-今回インストールするGitのバージョンは2.55.0.5です。
+今回インストールするGitのバージョンは2.56.0です。
 :::
 
 GitHubアカウントの作成後はGitをインストールしていきます。[Gitのインストールページ](https://git-scm.com/install/windows)にアクセスします。
@@ -98,22 +98,43 @@ GitHubアカウントの作成後はGitをインストールしていきます�
 実行するとウィザードが表示されます。ライセンス情報が表示されたらNextをクリックします。
 ![Git_Wizard01.png](/images/Git_Wizard01.png)
 
-コンポーネントの選択画面では、赤枠のチェックを外してください（今回は不要な機能です）。  
+インストール先はDドライブ直下を指定します。
 その後Nextをクリックします。
 ![Git_Wizard02.png](/images/Git_Wizard02.png)
 
-次の画面ではNextをクリックします（GitのデフォルトエディタはVimにします）。  
-その次の画面では下のラジオボタンをチェックし、テキストボックスが“main”であることを確認します。  
+コンポーネントの選択画面では、チェックを全て外してください。  
 その後Nextをクリックします。
 ![Git_Wizard03.png](/images/Git_Wizard03.png)
 
 :::message
-ここから画面を8つ分全てNextをクリックしてください。
+2つほど画面をスキップします（Nextをクリックしてください）。
 :::
 
+デフォルトのブランチ名はmainに指定します。その後Nextをクリックします。
+![Git_Wizard04.png](/images/Git_Wizard04.png)
 
+:::message
+ここから画面を8つほどスキップします（Nextをクリックしてください）。
+:::
 
-# 参考文献
+InstallをクリックしてGitのインストールを開始します。
+![Git_Wizard05.png](/images/Git_Wizard05.png)
+
+インストールが開始されます。
+![Git_Wizard06.png](/images/Git_Wizard06.png)
+
+インストールが完了したらFinishをクリックしてインストールを終了します（View Release Notesはチェックを外して構いません）。
+![Git_Wizard07.png](/images/Git_Wizard07.png)
+これでGitを使用できるようになります。
+
+:::message
+サークルでGitを使用する場合は、PCの再起動ごとにGitを再インストールする必要があります。  
+（ポータブル版Gitならその必要ないのでは？と思われるかもしれませんが、今はご容赦願います。）
+:::
+
+## 補足
+上記手順をクリアしたメンバーはGitHubアカウントの初期ユーザ名を教えてください。  
+私がフォローします。
 
 # 改訂履歴
 | Ver. | 更新日 |
