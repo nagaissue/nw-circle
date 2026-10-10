@@ -1,0 +1,20 @@
+{
+    "hediet.vscode-drawio.resizeImages": null,
+    "vscode-office.editorTheme": "Light",
+    "java.jdt.ls.java.home": "D:\\jdk-21.0.2",
+    "chat.viewSessions.orientation": "stacked",
+    "editor.minimap.enabled": false,
+    
+    "terminal.integrated.profiles.windows": {
+        "GitBash": {
+            "path": [
+                "D:\\PortableGit\\bin\\bash.exe"
+            ],
+            //"args":["-l"],
+            "args":["--login", "-l"],
+            "icon": "terminal-bash"
+        }
+    },
+    //"git.path": "D:\\PortableGit\\bin\\bash.exe",
+    "git.path": "D:\\PortableGit\\cmd\\git.exe",
+}
