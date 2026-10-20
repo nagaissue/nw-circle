@@ -2,7 +2,7 @@
 title: "Portable GitをVS Codeにセットアップしてみる"
 emoji: "📝"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [PortableGit, vscode]
+topics: [Git, vscode]
 published: true
 ---
 
@@ -133,5 +133,6 @@ VS Codeのスタート画面で`Ctrl`キー + `@`を押します
 | Ver. | 更新日 | 更新内容 |
 | --- | --- | --- |
 | 1.0 | 2026/10/19 | 本記事を初公開 |
+| 1.1 | 2026/10/21 | PortableGitタグをGitに変更 |
 
 以上
