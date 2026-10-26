@@ -2,7 +2,7 @@
 title: "Portable GitをVS Codeにセットアップしてみる"
 emoji: "📝"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [PortableGit, vscode]
+topics: [Git, vscode]
 published: true
 ---
 
@@ -17,7 +17,8 @@ published: true
 このURLにアクセスします↓
 https://git-scm.com/install/windows
 
-`Git for Windows/x64 Portable.`をクリックして、任意のフォルダにexeファイルをダウンロードします
+`Git for Windows/x64 Portable.`をクリックして、任意のフォルダにexeファイルをダウンロードします  
+（今回はDドライブを指定します）
 ![setup01.png](/images/portablegit_setup_for_vscode/setup01.png)
 
 ダウンロードが完了したら、exeファイルをクリックして実行します
@@ -42,7 +43,7 @@ Dドライブ直下にこのフォルダが作成されます
 フォルダ内はこんな感じです
 ![setup07.png](/images/portablegit_setup_for_vscode/setup07.png)
 
-:::message type="success"
+:::message
 これでPortable Gitのインストールは完了です
 :::
 
@@ -62,26 +63,32 @@ VS Codeが起動しましたら、画面左下の歯車アイコンをクリッ�
 JSON形式の設定ファイルが編集モードで表示されます（既存の設定が数行あります）
 ![setup12.png](/images/portablegit_setup_for_vscode/setup12.png)
 
-:::message
-この段階で`"git.path": "",`と書かれた行は削除してください
-:::
-
-これに次のコードをコピー&ペーストしてください（中括弧の中にペーストしてください）
+次のコードを全選択し、`settings.json`にペーストしてください
 ```json
-"terminal.integrated.profiles.windows": {
-        "GitBash": {
+{
+    "workbench.editor.useModal": "some", // ワークベンチのエディタモードを「some」に設定
+    "chat.mcp.gallery.enabled": true, // AIチャットのギャラリー機能を有効化し、チャットの履歴やセッションをギャラリー形式で表示可能に設定
+    "network.meteredConnection": "off", // ネットワーク接続が従量制である場合の動作を無効化（オフ）に設定
+    "editor.minimap.enabled": false, // エディタのミニマップ表示を無効化し、コードの全体像を小さなサムネイルで表示しないように設定
+    "chat.viewSessions.orientation": "stacked", // AIチャットのセッション表示を縦方向に積み重ねる形式に設定
+    "terminal.integrated.initialHint": false, // ターミナル起動時の初期ヒント表示を無効化
+
+    "terminal.integrated.profiles.windows": { // Windows環境での統合ターミナルのプロファイル設定
+        "Portable Git Bash": { // プロファイル名を「Portable Git Bash」に設定
             "path": [
                 "D:\\PortableGit\\bin\\bash.exe"
             ],
             "args":["--login", "-l"],
-            "icon": "terminal-bash"
+            "icon": "terminal-bash",
+            "env": { // 環境変数の設定
+                "GIT_CONFIG_GLOBAL": "D:\\PortableGit\\.gitconfig",
+            }
         }
     },
     "git.path": "D:\\PortableGit\\cmd\\git.exe",
     "git.configLocation":  "D:\\PortableGit\\.gitconfig",
+}
 ```
-コピー&ペースト後のファイル内はこのようになります（設定箇所以外は若干個人差があります）
-![setup13.png](/images/portablegit_setup_for_vscode/setup13.png)
 
 次に`D:\\PortableGit`フォルダに`.gitconfig`ファイルを作成します  
 エクスプローラを起動し、`D:\\PortableGit`フォルダに移動して右クリック→`新規作成`→`テキスト ドキュメント`をクリックします
@@ -102,7 +109,7 @@ VS Codeの起動画面を操作している（アクティブにしている）�
 
 フォルダ内にある`.gitconfig`をクリックしてファイルを展開します
 ![setup19.png](/images/portablegit_setup_for_vscode/setup19.png)
-ファイルに次のコードをコピー&ペーストしてください
+ファイルに次のサンプルコードをコピー&ペーストしてください
 ```json
 [user]
     name = taro
@@ -133,5 +140,7 @@ VS Codeのスタート画面で`Ctrl`キー + `@`を押します
 | Ver. | 更新日 | 更新内容 |
 | --- | --- | --- |
 | 1.0 | 2026/10/19 | 本記事を初公開 |
+| 1.1 | 2026/10/21 | トピックスをPortableGitからGitに変更 |
+| 1.2 | 2026/10/26 | |
 
 以上
