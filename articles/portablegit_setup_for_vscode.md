@@ -12,6 +12,10 @@ published: true
 最近サークルでGit/GitHubを学習し始めましたが、本校ではPC再起動の度にGitを再インストールする必要があります  
 ですので、その手間を省くためにPortable Gitを導入しようということで、VS Codeの設定と共に学習しようと考えました
 
+## 対象読者
+ネットワークサークルメンバー  
+VS CodeでGitを使用しているが、Portable版Gitに乗り換えたい方
+
 # 2.Portable Gitのインストール
 
 このURLにアクセスします↓
@@ -63,16 +67,9 @@ VS Codeが起動しましたら、画面左下の歯車アイコンをクリッ�
 JSON形式の設定ファイルが編集モードで表示されます（既存の設定が数行あります）
 ![setup12.png](/images/portablegit_setup_for_vscode/setup12.png)
 
-次のコードを全選択し、`settings.json`にペーストしてください
+既存の設定に次のコードを追記してください
 ```json
 {
-    "workbench.editor.useModal": "some", // ワークベンチのエディタモードを「some」に設定
-    "chat.mcp.gallery.enabled": true, // AIチャットのギャラリー機能を有効化し、チャットの履歴やセッションをギャラリー形式で表示可能に設定
-    "network.meteredConnection": "off", // ネットワーク接続が従量制である場合の動作を無効化（オフ）に設定
-    "editor.minimap.enabled": false, // エディタのミニマップ表示を無効化し、コードの全体像を小さなサムネイルで表示しないように設定
-    "chat.viewSessions.orientation": "stacked", // AIチャットのセッション表示を縦方向に積み重ねる形式に設定
-    "terminal.integrated.initialHint": false, // ターミナル起動時の初期ヒント表示を無効化
-
     "terminal.integrated.profiles.windows": { // Windows環境での統合ターミナルのプロファイル設定
         "Portable Git Bash": { // プロファイル名を「Portable Git Bash」に設定
             "path": [
@@ -81,17 +78,24 @@ JSON形式の設定ファイルが編集モードで表示されます（既存�
             "args":["--login", "-l"],
             "icon": "terminal-bash",
             "env": { // 環境変数の設定
-                "GIT_CONFIG_GLOBAL": "D:\\PortableGit\\.gitconfig",
+                "GIT_CONFIG_GLOBAL": "Z:\\PortableGit\\.gitconfig",
             }
         }
     },
     "git.path": "D:\\PortableGit\\cmd\\git.exe",
-    "git.configLocation":  "D:\\PortableGit\\.gitconfig",
+    "git.configLocation":  "Z:\\PortableGit\\.gitconfig",
 }
 ```
 
-次に`D:\\PortableGit`フォルダに`.gitconfig`ファイルを作成します  
-エクスプローラを起動し、`D:\\PortableGit`フォルダに移動して右クリック→`新規作成`→`テキスト ドキュメント`をクリックします
+:::message
+既に`git.path`等のコードがあれば削除してください
+:::
+:::message
+設定内のファイルパスが`D:\\`と`Z:\\`で異なる箇所があるので注意してください
+:::
+
+次に`Z:\\PortableGit`フォルダを新規作成し、`.gitconfig`ファイルを作成します  
+エクスプローラを起動し、`Z:\\PortableGit`フォルダに移動して右クリック→`新規作成`→`テキスト ドキュメント`をクリックします
 ![setup14.png](/images/portablegit_setup_for_vscode/setup14.png)
 ファイル名を全選択し、`.gitconfig`と入力してEnterキーをクリックします
 ![setup15.png](/images/portablegit_setup_for_vscode/setup15.png)
@@ -101,11 +105,15 @@ JSON形式の設定ファイルが編集モードで表示されます（既存�
 ここからはVS Codeを使用していきます  
 VS Codeの起動画面を操作している（アクティブにしている）状態で`Ctrl`キーを押しながら`K`→`O`と順に押します  
 するとフォルダの選択画面が表示されます  
-そこでDドライブに移動して`PortableGit`をクリックし、`フォルダーの選択`をクリックしてください
+そこでZドライブに移動して`PortableGit`をクリックし、`フォルダーの選択`をクリックしてください
 ![setup17.png](/images/portablegit_setup_for_vscode/setup17.png)
 
-`D:\\PortableGit\\`に移動することができます
+`Z:\\PortableGit\\`に移動することができます
 ![setup18.png](/images/portablegit_setup_for_vscode/setup18.png)
+
+:::message
+フォルダを閉じるときは`Ctrl`キーを押しながら`K`、その後`F`を押します
+:::
 
 フォルダ内にある`.gitconfig`をクリックしてファイルを展開します
 ![setup19.png](/images/portablegit_setup_for_vscode/setup19.png)
@@ -118,6 +126,9 @@ VS Codeの起動画面を操作している（アクティブにしている）�
 :::message
 `name`はGitHubのユーザ名、`email`は([このURL](https://github.com/settings/emails))にアクセスし、プライベートに用意されたemailアドレスを入力してください
 ![setup20.png](/images/portablegit_setup_for_vscode/setup20.png)
+:::
+:::message
+`.gitconfig`をDドライブに作成すると、使用PCを変更するときに自分以外の設定が適用されてしまうためZドライブに作成します
 :::
 
 入力後は`Ctrl`キー + `S`で保存してください  
@@ -142,5 +153,6 @@ VS Codeのスタート画面で`Ctrl`キー + `@`を押します
 | 1.0 | 2026/10/19 | 本記事を初公開 |
 | 1.1 | 2026/10/21 | トピックスをPortableGitからGitに変更 |
 | 1.2 | 2026/10/26 | 前回の改訂履歴の追記、Portable Gitのダウンロードパス明記、不要なメッセージブロックの削除、`settings.json`手順の全コピー化およびペースト後表示の削除 |
+| 1.3 | 2026/10/27 | 対象読者の追記、設定手順の見直し、`.gitconfig`の保存先をZドライブに変更 |
 
 以上
