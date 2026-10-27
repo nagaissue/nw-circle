@@ -140,7 +140,7 @@ VS Codeの起動画面を操作している（アクティブにしている）�
 VS Codeのスタート画面で`Ctrl`キー + `@`を押します  
 すると画面下部にターミナル画面が表示されます
 ![setup22.png](/images/portablegit_setup_for_vscode/setup22.png)
-右上のトグルリストをクリックし、`GitBash`をクリックします
+右上のトグルリストをクリックし、`Portable Git Bash`をクリックします
 ![setup23.png](/images/portablegit_setup_for_vscode/setup23.png)
 プロンプトに`git config --global user.name`を実行、次に`git config --global user.email`を実行し、先ほど設定した`user`と`email`が出力されれば設定成功です
 
@@ -154,5 +154,6 @@ VS Codeのスタート画面で`Ctrl`キー + `@`を押します
 | 1.1 | 2026/10/21 | トピックスをPortableGitからGitに変更 |
 | 1.2 | 2026/10/26 | 前回の改訂履歴の追記、Portable Gitのダウンロードパス明記、不要なメッセージブロックの削除、`settings.json`手順の全コピー化およびペースト後表示の削除 |
 | 1.3 | 2026/10/27 | 対象読者の追記、設定手順の見直し、`.gitconfig`の保存先をZドライブに変更 |
+| 1.4 | 2026/10/27 | ターミナルのプロファイル名を「Portable Git Bash」に修正 |
 
 以上
