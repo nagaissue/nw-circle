@@ -124,7 +124,7 @@ VS Codeの起動画面を操作している（アクティブにしている）�
     email = hogehoge@example.com
 ```
 :::message
-`name`はGitHubのユーザ名、`email`は([このURL](https://github.com/settings/emails))にアクセスし、プライベートに用意されたemailアドレスを入力してください
+`name`はGitHubのユーザ名、`email`は([このURL](https://github.com/settings/emails))にアクセスし、プライベートに用意されたemailアドレスを入力してください（`Keep my email addresses private`をONにしてください）
 ![setup20.png](/images/portablegit_setup_for_vscode/setup20.png)
 :::
 :::message
@@ -155,5 +155,6 @@ VS Codeのスタート画面で`Ctrl`キー + `@`を押します
 | 1.2 | 2026/10/26 | 前回の改訂履歴の追記、Portable Gitのダウンロードパス明記、不要なメッセージブロックの削除、`settings.json`手順の全コピー化およびペースト後表示の削除 |
 | 1.3 | 2026/10/27 | 対象読者の追記、設定手順の見直し、`.gitconfig`の保存先をZドライブに変更 |
 | 1.4 | 2026/10/27 | ターミナルのプロファイル名を「Portable Git Bash」に修正 |
+| 1.5 | 2026/11/10 | GitHubのプライベートメールアドレス設定を明記 |
 
 以上
